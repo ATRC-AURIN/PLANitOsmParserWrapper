@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.planit.converter.network.NetworkConverterFactory;
+import org.planit.logging.Logging;
 import org.planit.matsim.converter.PlanitMatsimNetworkWriter;
 import org.planit.matsim.converter.PlanitMatsimNetworkWriterFactory;
 import org.planit.osm.converter.network.PlanitOsmNetworkReader;
@@ -21,15 +22,25 @@ import org.planit.utils.locale.CountryNames;
  * we are restricted to using the Oceania input file which is expected to be available in the directory from where
  * this application is executed and should be named exactly <b>australia-oceania-latest.osm.pbf</b>.
  * <p>
- * The following options are available:
+ * The following command line options are available which should be provided such that the key is preceded with a double hypen and the value follows directly (if any) with any number of 
+ * spaces in between (no hyphens), e.g., "--/<key/> /<value/>:
  * <ul>
- * <li>--bbox "long long lat lat" valid bounding box within Australia must be provided</li>
- * <li>--fidelity "coarse/medium/fine" if absent defaults to medium</li>
- * <li>--rail "yes/no" if absent defaults to no</li>
- * <li>--output "./output" output directory, if absent defaults to directory this application was invoked from
+ * <li>--bbox with value as "long long lat lat" valid bounding box within Australia must be provided</li>
+ * <li>--fidelity with value "coarse/medium/fine" if absent defaults to medium</li>
+ * <li>--rail with value "yes/no" if absent defaults to no</li>
+ * <li>--output with value "/<path/>" output directory, if absent defaults to directory this application was invoked from
  * <li>
  * </ul>
+ * In addition for the OSM reader we limit ourselves to:
+ * <ul>
+ * <li> road modes: motor_car support only </li>
+ * <li> rail modes: train, tram, light rail only (when rail is activated) </li>
+ * </ul>
  * </p>
+ * <p>
+ * For the MATSim output we by default activate the detailed geometry in case the user would like to visualise the results using VIA
+ * where it can be used to prettify the link shapes (instead of being restricted to start/end nodes only). Further, road modes are mapped to Matsim mode "car" whereas
+ * all public transport modes are mapped to Matsim mode "pt".
  * 
  * 
  * @author markr
@@ -38,16 +49,7 @@ import org.planit.utils.locale.CountryNames;
 public class PlanitAurinParserMain {
 
   /** logger to use */
-  private static final Logger LOGGER = Logger.getLogger(PlanitAurinParserMain.class.getCanonicalName());
-
-  /** currently hard-coded oceania file expected in directory where this application was run from */
-  private static final Path MATSIM_OUTPUT_PATH = Path.of("");
-
-  /** currently hard-coded oceania file expected in directory where this application was run from */
-  private static final Path OSM_FILE_PATH = Path.of("", "australia-oceania-latest.osm.pbf");
-
-  /** help key */
-  private static final String ARGUMENT_HELP = "help";
+  private static Logger LOGGER = null;
 
   /**
    * Create a key value map based on provided arguments. If a key does not require a value, then it receives an
@@ -75,11 +77,12 @@ public class PlanitAurinParserMain {
    * @param keyValueMap arguments containing configuration choices
    * @throws PlanItException thrown if error
    */
-  private static void configureNetworkReader(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap)
-      throws PlanItException {
+  private static void configureNetworkReader(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");    
 
     /* fixed configuration option */
-    OsmNetworkReaderConfigurationHelper.restrictToCarOnly(osmNetworkReader);
+    OsmNetworkReaderConfigurationHelper.restrictToDefaultRoadModes(osmNetworkReader);
 
     /* user configuration options */
     OsmNetworkReaderConfigurationHelper.parseBoundingBox(osmNetworkReader, keyValueMap);
@@ -92,12 +95,24 @@ public class PlanitAurinParserMain {
    * 
    * @param matsimNetworkWriter to configure
    * @param keyValueMap arguments containing configuration choices
+   * @throws PlanItException thrown if null inputs
    */
-  private static void configureNetworkWriter(PlanitMatsimNetworkWriter matsimNetworkWriter,
-      Map<String, String> keyValueMap) {
-    // TODO Auto-generated method stub
+  private static void configureNetworkWriter(PlanitMatsimNetworkWriter matsimNetworkWriter, Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(matsimNetworkWriter, "Matsim network writer null");
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
 
+    /* fixed configuration option */
+    matsimNetworkWriter.getSettings().setGenerateDetailedLinkGeometryFile(true);
+
+    /* user configuration options */
+    MatsimNetworkWriterConfigurationHelper.parseOutputDirectory(matsimNetworkWriter, keyValueMap);
   }
+  
+  /** PAth from which application was invoked */
+  public static final Path CURRENT_PATH = Path.of("");    
+
+  /** Help key */
+  public static final String ARGUMENT_HELP = "help";  
 
   /**
    * Access point
@@ -106,7 +121,11 @@ public class PlanitAurinParserMain {
    */
   public static void main(String[] args) {
     try {
+      
+      /* logger + default Logging properties based on logging.properties file */
+      LOGGER = Logging.createLogger(PlanitAurinParserMain.class);
 
+      /* arguments as key/value map */
       Map<String, String> keyValueMap = getKeyValueMap(args);
 
       /* when --help is present, print options */
@@ -117,16 +136,14 @@ public class PlanitAurinParserMain {
 
       } else {
 
-        /* osm network reader for Oceania/Australia */
+        /* osm network reader */
         PlanitOsmNetworkReader osmNetworkReader = PlanitOsmNetworkReaderFactory.create(
-            OSM_FILE_PATH.toAbsolutePath().toString(), CountryNames.AUSTRALIA);
-
-        /* Matsim network writer for Australia */
-        PlanitMatsimNetworkWriter matsimNetworkWriter = PlanitMatsimNetworkWriterFactory.create(
-            MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), CountryNames.AUSTRALIA);
-
-        /* perform configuration based on input arguments */
+            OsmNetworkReaderConfigurationHelper.OSM_FILE_PATH.toAbsolutePath().toString(), CountryNames.AUSTRALIA);
         configureNetworkReader(osmNetworkReader, keyValueMap);
+
+        /* Matsim network writer */
+        PlanitMatsimNetworkWriter matsimNetworkWriter = PlanitMatsimNetworkWriterFactory.create(
+            MatsimNetworkWriterConfigurationHelper.MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), CountryNames.AUSTRALIA);
         configureNetworkWriter(matsimNetworkWriter, keyValueMap);
 
         /* perform conversion */

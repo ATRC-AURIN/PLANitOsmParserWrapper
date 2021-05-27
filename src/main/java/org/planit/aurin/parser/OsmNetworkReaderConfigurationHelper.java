@@ -1,25 +1,48 @@
 package org.planit.aurin.parser;
 
+import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.locationtech.jts.geom.Envelope;
 import org.planit.osm.converter.network.PlanitOsmNetworkReader;
 import org.planit.osm.tags.OsmHighwayTags;
+import org.planit.osm.tags.OsmRailModeTags;
 import org.planit.osm.tags.OsmRoadModeTags;
 import org.planit.utils.exceptions.PlanItException;
+import org.planit.utils.misc.CharacterUtils;
 
 /**
- * Helper methods to configure the OSM network reader based on user arguments provided
- * for this wrapper
+ * Helper methods to configure the OSM network reader based on user arguments provided for this wrapper.
  * 
  * @author markr
  *
  */
 public class OsmNetworkReaderConfigurationHelper {
+  
+  //----------------------------------------------------
+  //--------INPUT PATH-----------------------------------
+  //----------------------------------------------------
+  
+  /** Currently hard-coded Oceania file expected in directory where this application was run from */
+  public static final Path OSM_FILE_PATH = Path.of(PlanitAurinParserMain.CURRENT_PATH.toString(), "australia-oceania-latest.osm.pbf");  
+  
+  //----------------------------------------------------
+  //--------ROAD MODES----------------------------------
+  //----------------------------------------------------
+  
+  /**
+   * The supported OSM road modes. These include:
+   * 
+   * <ul>
+   * <li>motorcar</li>
+   * </ul>
+   */
+  private static final List<String> OSM_ROAD_MODES = 
+      Arrays.asList(OsmRoadModeTags.MOTOR_CAR);  
   
   //----------------------------------------------------
   //--------FIDELITY------------------------------------
@@ -50,7 +73,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * <li>primary_link</li>
    * </ul>
    */
-  private static final List<String> coarseOsmHighwayTypes = 
+  private static final List<String> COARSE_OSM_HIGHWAY_TYPES = 
       Arrays.asList(
           OsmHighwayTags.MOTORWAY,
           OsmHighwayTags.MOTORWAY_LINK,
@@ -68,8 +91,8 @@ public class OsmNetworkReaderConfigurationHelper {
    * <li>secondary_link</li>
    * </ul>
    */
-  private static final List<String> mediumOsmHighwayTypes =
-      Stream.concat(coarseOsmHighwayTypes.stream(), 
+  private static final List<String> MEDIUM_OSM_HIGHWAY_TYPES =
+      Stream.concat(COARSE_OSM_HIGHWAY_TYPES.stream(), 
           Arrays.asList(
             OsmHighwayTags.SECONDARY,
             OsmHighwayTags.SECONDARY_LINK).stream()).collect(Collectors.toList());
@@ -88,8 +111,8 @@ public class OsmNetworkReaderConfigurationHelper {
    * <li>road</li>
    * </ul>
    */
-  private static final List<String> fineOsmHighwayTypes =
-      Stream.concat(mediumOsmHighwayTypes.stream(), 
+  private static final List<String> FINE_OSM_HIGHWAY_TYPES =
+      Stream.concat(MEDIUM_OSM_HIGHWAY_TYPES.stream(), 
           Arrays.asList(
             OsmHighwayTags.TERTIARY,
             OsmHighwayTags.TERTIARY_LINK,
@@ -113,6 +136,21 @@ public class OsmNetworkReaderConfigurationHelper {
   /** Deactivation value to not parse rail infrastructure, e.g., "no" */
   private static final String RAIL_PARSER_DEACTIVATE = "no";
   
+  /**
+   * The supported OSM rail modes. These include:
+   * 
+   * <ul>
+   * <li>light_rail</li>
+   * <li>train</li>
+   * <li>tram</li>
+   * </ul>
+   */
+  private static final List<String> OSM_RAIL_MODES = 
+      Arrays.asList(
+          OsmRailModeTags.LIGHT_RAIL,
+          OsmRailModeTags.TRAIN,
+          OsmRailModeTags.TRAM);  
+  
   //----------------------------------------------------
   //--------BOUNDING BOX--------------------------------
   //----------------------------------------------------  
@@ -124,11 +162,13 @@ public class OsmNetworkReaderConfigurationHelper {
    * member
    * 
    * @param osmNetworkReader to configure
+   * @throws PlanItException thrown if null inputs
    */
-  private static void configureMediumOsmNetworkFidelity(PlanitOsmNetworkReader osmNetworkReader) {
+  private static void configureMediumOsmNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     /* medium level detail */
-    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllOsmHighwayTypesExcept(mediumOsmHighwayTypes);
+    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllOsmHighwayTypesExcept(MEDIUM_OSM_HIGHWAY_TYPES);
     
   }
 
@@ -136,33 +176,40 @@ public class OsmNetworkReaderConfigurationHelper {
    * member
    * 
    * @param osmNetworkReader to configure
+   * @throws PlanItException thrown if null inputs
    */
-  private static void configureCoarseOsmNetworkFidelity(PlanitOsmNetworkReader osmNetworkReader) {
+  private static void configureCoarseOsmNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     /* coarse level detail */
-    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllOsmHighwayTypesExcept(coarseOsmHighwayTypes);
+    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllOsmHighwayTypesExcept(COARSE_OSM_HIGHWAY_TYPES);
   }
 
   /** For the medium network fidelity we activate the following OSM highway types based on the fineOsmHighwayTypes
    * member
    * 
    * @param osmNetworkReader to configure
+   * @throws PlanItException thrown if null inputs
    */  
-  private static void configureFineOsmNetworkFidelity(PlanitOsmNetworkReader osmNetworkReader) {
+  private static void configureFineOsmNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     /* fine level detail */
-    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllOsmHighwayTypesExcept(fineOsmHighwayTypes);
+    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllOsmHighwayTypesExcept(FINE_OSM_HIGHWAY_TYPES);
     
   }
 
-  /** Based on the fidelity choice configrue the readers level of detail. If no fidelity if provided, we assume medium
+  /** Based on the fidelity choice configure the readers level of detail. If no fidelity if provided, we assume medium
    * level of detail.
    * 
    * @param osmNetworkReader to configure
    * @param keyValueMap to extract fidelity configuration from
-   * @throws PlanItException 
+   * @throws PlanItException thrown if null inputs
    */
-  public static void parseNetworkFidelity(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
+    
     String fidelityValue = keyValueMap.getOrDefault(FIDELITY_KEY, FIDELITY_MEDIUM);
     switch (fidelityValue) {
       case FIDELITY_FINE:
@@ -184,13 +231,17 @@ public class OsmNetworkReaderConfigurationHelper {
    * 
    * @param osmNetworkReader to configure
    * @param keyValueMap to extract rail parser configuration from
-   * @throws PlanItException thrown if error
+   * @throws PlanItException thrown if null inputs
    */
-  public static void parseRailActivation(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseRailActivation(final PlanitOsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
+    
     String railActicationValue = keyValueMap.getOrDefault(RAIL_PARSER_ACTIVATION_KEY, RAIL_PARSER_DEACTIVATE);
     switch (railActicationValue) {
       case RAIL_PARSER_ACTIVATE:
         osmNetworkReader.getSettings().activateRailwayParser(true);
+        restrictToDefaultRailModes(osmNetworkReader);
         break;
       case RAIL_PARSER_DEACTIVATE:
         osmNetworkReader.getSettings().activateRailwayParser(false);
@@ -205,21 +256,50 @@ public class OsmNetworkReaderConfigurationHelper {
    * 
    * @param osmNetworkReader to configure
    * @param keyValueMap to extract bounding box configuration from
-   * @throws PlanItException thrown if error
+   * @throws PlanItException thrown if null inputs
    */
-  public static void parseBoundingBox(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseBoundingBox(final PlanitOsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
+    
     if(!keyValueMap.containsKey(BOUNDING_BOX_KEY)) {
       throw new PlanItException("--bbox configuration option missing, this is required");
     }
     
-    //TODO
+    String boundingBoxValue = keyValueMap.get(BOUNDING_BOX_KEY);
+    String[] boundingBoxOrdinates = boundingBoxValue.split(CharacterUtils.COMMA.toString());
+    if(boundingBoxOrdinates.length != 4) {
+      throw new PlanItException("Bounding box is expected to have comma separated values but found %s", boundingBoxValue);
+    }
+    
+    Envelope boundingBox = new Envelope(
+        Double.parseDouble(boundingBoxOrdinates[0]),
+        Double.parseDouble(boundingBoxOrdinates[1]),
+        Double.parseDouble(boundingBoxOrdinates[2]), 
+        Double.parseDouble(boundingBoxOrdinates[3]));
+    
+    osmNetworkReader.getSettings().setBoundingBox(boundingBox);
   }
 
   /** Restrict allowed modes to car only, so roads that do not have car access will not be parsed even when activated
    * 
    * @param osmNetworkReader to configure
+   * @throws PlanItException thrown if null inputs
    */
-  public static void restrictToCarOnly(PlanitOsmNetworkReader osmNetworkReader) {
-    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllRoadModesExcept(OsmRoadModeTags.MOTOR_CAR);
+  public static void restrictToDefaultRoadModes(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    
+    osmNetworkReader.getSettings().getHighwaySettings().deactivateAllRoadModesExcept(OSM_ROAD_MODES);
   }
+  
+  /** Restrict allowed modes to train, tram, lightrail only, so tracks that do not have such access will not be parsed even when activated
+   * 
+   * @param osmNetworkReader to configure
+   * @throws PlanItException thrown if null inputs
+   */
+  public static void restrictToDefaultRailModes(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    
+    osmNetworkReader.getSettings().getRailwaySettings().deactivateAllRailModesExcept(OSM_RAIL_MODES);
+  }  
 }
