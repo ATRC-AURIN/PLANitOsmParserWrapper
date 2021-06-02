@@ -24,7 +24,7 @@ public class MatsimNetworkWriterConfigurationHelper {
   /** Output path defaults to directory where this application was run from */
   public static final Path MATSIM_OUTPUT_PATH = PlanitAurinParserMain.CURRENT_PATH;  
 
-  /** The output directory to use. If absent defaults to directory this application was invoked from
+  /** The output directory to use. If absent nothing is set and it is assumed the output directory is set upon creationg of the writer
    * 
    * @param matsimNetworkWriter to configure
    * @param keyValueMap to extract information from
@@ -34,8 +34,10 @@ public class MatsimNetworkWriterConfigurationHelper {
     PlanItException.throwIfNull(matsimNetworkWriter, "Matsim network writer null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
-    String outputPathValue = keyValueMap.getOrDefault(OUTPUT_PATH_KEY, MATSIM_OUTPUT_PATH.toString());
-    matsimNetworkWriter.getSettings().setOutputDirectory(outputPathValue);
+    if(keyValueMap.containsKey(OUTPUT_PATH_KEY)) {
+      matsimNetworkWriter.getSettings().setOutputDirectory(keyValueMap.get(OUTPUT_PATH_KEY));  
+    }    
+    
   }
 
 }

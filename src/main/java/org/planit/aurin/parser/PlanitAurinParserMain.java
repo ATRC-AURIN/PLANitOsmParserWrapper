@@ -15,17 +15,18 @@ import org.planit.osm.converter.network.PlanitOsmNetworkReaderFactory;
 import org.planit.utils.args.ArgumentParser;
 import org.planit.utils.args.ArgumentStyle;
 import org.planit.utils.exceptions.PlanItException;
-import org.planit.utils.locale.CountryNames;
 
 /**
  * Access point for running a PLANit network parser that converts an OSM file to a MATSim compatible network. for now
  * we are restricted to using the Oceania input file which is expected to be available in the directory from where
  * this application is executed and should be named exactly <b>australia-oceania-latest.osm.pbf</b>.
  * <p>
- * The following command line options are available which should be provided such that the key is preceded with a double hypen and the value follows directly (if any) with any number of 
+ * The following command line options are available which should be provided such that the key is preceded with a double hyphen and the value follows directly (if any) with any number of 
  * spaces in between (no hyphens), e.g., "--/<key/> /<value/>:
  * <ul>
- * <li>--bbox with value as "long long lat lat" valid bounding box within Australia must be provided</li>
+ * <li>--input with value which is either a local file location or a URL that we can stream
+ * <li>--country with value that is used to initialise defaults (speed limits, projection etc.), if absent global defaults are used 
+ * <li>--bbox with value as "long long lat lat" valid bounding box that restrict the input further (if at all)</li>
  * <li>--fidelity with value "coarse/medium/fine" if absent defaults to medium</li>
  * <li>--rail with value "yes/no" if absent defaults to no</li>
  * <li>--output with value "/<path/>" output directory, if absent defaults to directory this application was invoked from
@@ -85,6 +86,7 @@ public class PlanitAurinParserMain {
     OsmNetworkReaderConfigurationHelper.restrictToDefaultRoadModes(osmNetworkReader);
 
     /* user configuration options */
+    OsmNetworkReaderConfigurationHelper.parseInputsource(osmNetworkReader, keyValueMap);    
     OsmNetworkReaderConfigurationHelper.parseBoundingBox(osmNetworkReader, keyValueMap);
     OsmNetworkReaderConfigurationHelper.parseRailActivation(osmNetworkReader, keyValueMap);
     OsmNetworkReaderConfigurationHelper.parseNetworkFidelity(osmNetworkReader, keyValueMap);
@@ -136,14 +138,14 @@ public class PlanitAurinParserMain {
 
       } else {
 
+        String countryName = OsmNetworkReaderConfigurationHelper.getCountry(keyValueMap);
         /* osm network reader */
-        PlanitOsmNetworkReader osmNetworkReader = PlanitOsmNetworkReaderFactory.create(
-            OsmNetworkReaderConfigurationHelper.OSM_FILE_PATH.toAbsolutePath().toString(), CountryNames.AUSTRALIA);
+        PlanitOsmNetworkReader osmNetworkReader = PlanitOsmNetworkReaderFactory.create(countryName);
         configureNetworkReader(osmNetworkReader, keyValueMap);
 
         /* Matsim network writer */
         PlanitMatsimNetworkWriter matsimNetworkWriter = PlanitMatsimNetworkWriterFactory.create(
-            MatsimNetworkWriterConfigurationHelper.MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), CountryNames.AUSTRALIA);
+            MatsimNetworkWriterConfigurationHelper.MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), countryName);
         configureNetworkWriter(matsimNetworkWriter, keyValueMap);
 
         /* perform conversion */

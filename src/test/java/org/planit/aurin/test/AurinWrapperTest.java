@@ -15,17 +15,21 @@ import org.planit.aurin.parser.PlanitAurinParserMain;
 public class AurinWrapperTest {
 
   /**
-   * Test with maximum number of defaults
+   * Test with an URL streaming based input source
    */
   @Test
-  public void defaultsTest() {
+  public void osmNetworkReaderStreamingTest() {
     try {
 
-      // Run with settings
-      //PlanitAurinParserMain.main(args);
-
-      // Create stream based approach for testing
-      
+      // Run with settings using stream
+      PlanitAurinParserMain.main(
+          new String[]{
+              "--input", 
+              "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204",
+              "--country",
+              "Germany", 
+              "--fidelity",
+              "fine"});     
       
       
     } catch (Exception e) {

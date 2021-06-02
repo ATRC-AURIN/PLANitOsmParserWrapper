@@ -1,6 +1,5 @@
 package org.planit.aurin.parser;
 
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import org.planit.osm.tags.OsmHighwayTags;
 import org.planit.osm.tags.OsmRailModeTags;
 import org.planit.osm.tags.OsmRoadModeTags;
 import org.planit.utils.exceptions.PlanItException;
+import org.planit.utils.locale.CountryNames;
 import org.planit.utils.misc.CharacterUtils;
 
 /**
@@ -24,11 +24,18 @@ import org.planit.utils.misc.CharacterUtils;
 public class OsmNetworkReaderConfigurationHelper {
   
   //----------------------------------------------------
-  //--------INPUT PATH-----------------------------------
+  //--------INPUT SOURCE -----------------------------------
   //----------------------------------------------------
   
-  /** Currently hard-coded Oceania file expected in directory where this application was run from */
-  public static final Path OSM_FILE_PATH = Path.of(PlanitAurinParserMain.CURRENT_PATH.toString(), "australia-oceania-latest.osm.pbf");  
+  /** Key reflecting the location of the input file or URL */
+  public static final String INPUT_SOURCE_KEY = "input";  
+  
+  //----------------------------------------------------
+  //--------COUNTRY -----------------------------------
+  //----------------------------------------------------
+  
+  /** Key reflecting the location of the input file or URL */
+  public static final String COUNTRY_KEY = "country";    
   
   //----------------------------------------------------
   //--------ROAD MODES----------------------------------
@@ -226,6 +233,22 @@ public class OsmNetworkReaderConfigurationHelper {
             "Unkown fidelity chosen %s, choose from %s, %s, %s",fidelityValue, FIDELITY_FINE, FIDELITY_MEDIUM, FIDELITY_COARSE);
     }
   }
+  
+  /** Parse the country, if not present, global country is assumed 
+   * 
+   * @param keyValueMap to extract country from
+   * @return extracted country name, global if not available from list or not present
+   * @throws PlanItException thrown if error
+   */  
+  public static String getCountry(Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
+    
+    if(!keyValueMap.containsKey(COUNTRY_KEY)) {
+      return CountryNames.GLOBAL;
+    }  
+    
+    return keyValueMap.get(COUNTRY_KEY);
+  }   
 
   /** Configure whether or not to activate the rail parse
    * 
@@ -252,7 +275,7 @@ public class OsmNetworkReaderConfigurationHelper {
     }    
   }
 
-  /** Configure the bounding box to use. Must be present, so if not present throw an exception
+  /** Configure the bounding box to use. Need not be present, if not present entire file/source is parsed
    * 
    * @param osmNetworkReader to configure
    * @param keyValueMap to extract bounding box configuration from
@@ -263,7 +286,7 @@ public class OsmNetworkReaderConfigurationHelper {
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
     if(!keyValueMap.containsKey(BOUNDING_BOX_KEY)) {
-      throw new PlanItException("--bbox configuration option missing, this is required");
+      return;
     }
     
     String boundingBoxValue = keyValueMap.get(BOUNDING_BOX_KEY);
@@ -279,6 +302,24 @@ public class OsmNetworkReaderConfigurationHelper {
         Double.parseDouble(boundingBoxOrdinates[3]));
     
     osmNetworkReader.getSettings().setBoundingBox(boundingBox);
+  }
+  
+  /** Parse the input source, this must be present, if not an exception is thrown 
+   * 
+   * @param osmNetworkReader to configure
+   * @param keyValueMap to extract input source from
+   * @throws PlanItException thrown if error
+   */
+  public static void parseInputsource(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
+    
+    if(!keyValueMap.containsKey(INPUT_SOURCE_KEY)) {
+      throw new PlanItException("--input option missing, this is required");
+    }  
+    
+    String inputSource = keyValueMap.get(INPUT_SOURCE_KEY);
+    osmNetworkReader.getSettings().setInputSource(inputSource);
   }
 
   /** Restrict allowed modes to car only, so roads that do not have car access will not be parsed even when activated
@@ -301,5 +342,6 @@ public class OsmNetworkReaderConfigurationHelper {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     osmNetworkReader.getSettings().getRailwaySettings().deactivateAllRailModesExcept(OSM_RAIL_MODES);
-  }  
+  }
+  
 }
