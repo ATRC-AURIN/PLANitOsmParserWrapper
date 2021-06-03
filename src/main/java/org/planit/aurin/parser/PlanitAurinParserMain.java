@@ -22,14 +22,14 @@ import org.planit.utils.exceptions.PlanItException;
  * this application is executed and should be named exactly <b>australia-oceania-latest.osm.pbf</b>.
  * <p>
  * The following command line options are available which should be provided such that the key is preceded with a double hyphen and the value follows directly (if any) with any number of 
- * spaces in between (no hyphens), e.g., "--/<key/> /<value/>:
+ * spaces in between (no hyphens), e.g., {@code --<key> <value>}:
  * <ul>
  * <li>--input with value which is either a local file location or a URL that we can stream
  * <li>--country with value that is used to initialise defaults (speed limits, projection etc.), if absent global defaults are used 
  * <li>--bbox with value as "long long lat lat" valid bounding box that restrict the input further (if at all)</li>
  * <li>--fidelity with value "coarse/medium/fine" if absent defaults to medium</li>
  * <li>--rail with value "yes/no" if absent defaults to no</li>
- * <li>--output with value "/<path/>" output directory, if absent defaults to directory this application was invoked from
+ * <li>--output with value {@code <path>} output directory, if absent defaults to directory this application was invoked from
  * <li>
  * </ul>
  * In addition for the OSM reader we limit ourselves to:
@@ -37,7 +37,6 @@ import org.planit.utils.exceptions.PlanItException;
  * <li> road modes: motor_car support only </li>
  * <li> rail modes: train, tram, light rail only (when rail is activated) </li>
  * </ul>
- * </p>
  * <p>
  * For the MATSim output we by default activate the detailed geometry in case the user would like to visualise the results using VIA
  * where it can be used to prettify the link shapes (instead of being restricted to start/end nodes only). Further, road modes are mapped to Matsim mode "car" whereas

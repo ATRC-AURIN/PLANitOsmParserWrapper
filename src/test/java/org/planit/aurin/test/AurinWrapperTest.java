@@ -21,7 +21,8 @@ public class AurinWrapperTest {
   public void osmNetworkReaderStreamingTest() {
     try {
 
-      // Run with settings using stream
+      // Run with settings using stream, equivalent to: 
+      // java -jar PLANitAurinParser.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
       PlanitAurinParserMain.main(
           new String[]{
               "--input", 
