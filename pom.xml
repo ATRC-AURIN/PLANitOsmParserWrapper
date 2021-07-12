@@ -10,11 +10,11 @@
 	</parent>
 
 	<groupId>org.planit.aurin.parser</groupId>
-	<artifactId>PLANitParserWrapper</artifactId>
+	<artifactId>PLANitAurinParser</artifactId>
 	<description>Wrapper to only expose funcionality used by Aurin ATRC platform regarding the OSM to MATSim converter</description>
 	<packaging>jar</packaging>
 
-	<name>PLANitParserWrapper</name>
+	<name>PLANitAurinParser</name>
 	<url>https://github.com/AURIN-OFFICE/PLANitOsmParserWrapper</url>
 
 	<!-- license based on the one published on the website -->

@@ -24,7 +24,7 @@ public class MatsimNetworkWriterConfigurationHelper {
   /** Output path defaults to directory where this application was run from */
   public static final Path MATSIM_OUTPUT_PATH = PlanitAurinParserMain.CURRENT_PATH;  
 
-  /** The output directory to use. If absent nothing is set and it is assumed the output directory is set upon creationg of the writer
+  /** The output directory to use. If absent nothing is set and it is assumed the output directory is set upon creation of the writer
    * 
    * @param matsimNetworkWriter to configure
    * @param keyValueMap to extract information from

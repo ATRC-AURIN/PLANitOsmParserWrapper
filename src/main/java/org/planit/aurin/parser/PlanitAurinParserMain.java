@@ -39,8 +39,8 @@ import org.planit.utils.exceptions.PlanItException;
  * </ul>
  * <p>
  * For the MATSim output we by default activate the detailed geometry in case the user would like to visualise the results using VIA
- * where it can be used to prettify the link shapes (instead of being restricted to start/end nodes only). Further, road modes are mapped to Matsim mode "car" whereas
- * all public transport modes are mapped to Matsim mode "pt".
+ * where it can be used to prettify the link shapes (instead of being restricted to start/end nodes only). Further, road modes are mapped to MATSim mode "car" whereas
+ * all public transport modes are mapped to MATSim mode "pt".
  * 
  * 
  * @author markr
@@ -109,7 +109,7 @@ public class PlanitAurinParserMain {
     MatsimNetworkWriterConfigurationHelper.parseOutputDirectory(matsimNetworkWriter, keyValueMap);
   }
   
-  /** PAth from which application was invoked */
+  /** Path from which application was invoked */
   public static final Path CURRENT_PATH = Path.of("");    
 
   /** Help key */
@@ -137,6 +137,7 @@ public class PlanitAurinParserMain {
 
       } else {
 
+        
         String countryName = OsmNetworkReaderConfigurationHelper.getCountry(keyValueMap);
         /* osm network reader */
         PlanitOsmNetworkReader osmNetworkReader = PlanitOsmNetworkReaderFactory.create(countryName);
