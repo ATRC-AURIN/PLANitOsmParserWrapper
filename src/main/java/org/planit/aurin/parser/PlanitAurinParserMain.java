@@ -133,7 +133,7 @@ public class PlanitAurinParserMain {
       if (keyValueMap.containsKey(ARGUMENT_HELP)) {
 
         // TODO
-        LOGGER.info("help requested on running PLANit OSM parser, this is not yet implemented");
+        LOGGER.info("--help is not yet implemented, see Javadoc instead for available arguments");
 
       } else {
 
