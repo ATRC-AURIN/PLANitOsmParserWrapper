@@ -1,4 +1,4 @@
-package org.planit.aurin.test;
+package org.planit.aurin.parser.test;
 
 import static org.junit.Assert.fail;
 
@@ -12,7 +12,7 @@ import org.planit.aurin.parser.PlanitAurinParserMain;
  * @author markr
  *
  */
-public class AurinWrapperTest {
+public class AurinParserWrapperTest {
 
   /**
    * Test with an URL streaming based input source
@@ -35,7 +35,7 @@ public class AurinWrapperTest {
       
     } catch (Exception e) {
       e.printStackTrace();
-      fail("Error when testing Aurin Wrapper with max defaults ");
+      fail("Error when testing Aurin Network Parser Wrapper");
     }
   }
 
