@@ -1,5 +1,6 @@
 package org.planit.aurin.parser;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import org.planit.osm.tags.OsmRoadModeTags;
 import org.planit.utils.exceptions.PlanItException;
 import org.planit.utils.locale.CountryNames;
 import org.planit.utils.misc.CharacterUtils;
+import org.planit.utils.misc.UrlUtils;
+import org.planit.utils.resource.ResourceUtils;
 
 /**
  * Helper methods to configure the OSM network reader based on user arguments provided for this wrapper.
@@ -164,6 +167,20 @@ public class OsmNetworkReaderConfigurationHelper {
   
   /** configuration key to determine bounding box to parse, must be present */
   private static final String BOUNDING_BOX_KEY = "bbox";  
+  
+  //----------------------------------------------------
+  //-------- CLEAN NETWORK -----------------------------
+  //----------------------------------------------------
+  
+  /** Key reflecting the location of the input file or URL */
+  public static final String CLEAN_NETWORK_KEY = "clean_network";    
+  
+  /** do clean the network */
+  private static final String CLEAN_NETWORK_YES = "yes";
+  
+  /** do not clean the network */
+  @SuppressWarnings("unused")
+  private static final String CLEAN_NETWORK_NO = "no";  
 
   /** For the medium network fidelity we activate the following OSM highway types based on the mediumOsmHighwayTypes
    * member
@@ -319,7 +336,32 @@ public class OsmNetworkReaderConfigurationHelper {
     }  
     
     String inputSource = keyValueMap.get(INPUT_SOURCE_KEY);
+    URL inputSourceAsResource = ResourceUtils.getResourceUrl(inputSource);
+    if(inputSourceAsResource!=null) {      
+      /* is local resource, use its absolute path instead of (possibly) relative path to avoid issues in OSM reader */
+      inputSource = UrlUtils.asLocalPath(inputSourceAsResource).toString();
+    }
+    
     osmNetworkReader.getSettings().setInputSource(inputSource);
+  }
+
+  /** set flag indicating whether or not the newly created MATSim network should be passed through the MATSim NetworkCleaner
+   * to ensure all links are reachable, e.g. ends of one way motorways at the edge of the network. Can be useful since MATSim
+   * assigns trips to the enarest node and if this is a one way link near the edge it is otherwise possible no route into the
+   * rest of the network can be created, causing MATSim to crash.
+   * 
+   * @param keyValueMap to extract from
+   * @return parsed value or default (true)
+   * @throws PlanItException thrown if error
+   */
+  public static boolean parseCleanNetwork(Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(keyValueMap, "Configuration information null");
+    
+    if(keyValueMap.containsKey(CLEAN_NETWORK_KEY)) {
+      return CLEAN_NETWORK_YES.equals(keyValueMap.get(CLEAN_NETWORK_KEY)) ? true : false;
+    }      
+    /* default */
+    return true;
   }
 
   /** Restrict allowed modes to car only, so roads that do not have car access will not be parsed even when activated

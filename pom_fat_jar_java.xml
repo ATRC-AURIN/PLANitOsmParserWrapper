@@ -17,6 +17,10 @@
 
 	<name>PLANitAurinParser</name>
 	<url>http://maven.apache.org</url>
+	
+  <properties>
+    <matsim.version>12.0</matsim.version>
+  </properties>	
 
 	<dependencies>
 	
@@ -50,8 +54,28 @@
       <groupId>org.planit.matsim</groupId>
       <artifactId>PLANitMatsim</artifactId>
     </dependency>    
+    
+    <!-- https://mvnrepository.com/artifact/org.matsim.contrib/osm -->
+    <dependency>
+        <groupId>org.matsim.contrib</groupId>
+        <artifactId>osm</artifactId>
+      <version>${matsim.version}</version>
+    </dependency>     
 
 	</dependencies>
+	
+  <repositories>
+    <repository>
+      <!-- Repository for MATSim releases (MATSim is not on Maven central) -->
+      <id>matsim</id>
+      <url>https://dl.bintray.com/matsim/matsim</url>
+    </repository>
+    <repository>
+      <!-- For MATSim snapshots: -->
+      <id>ojo-snapshots</id>
+      <url>https://oss.jfrog.org/libs-snapshot</url>
+    </repository> 
+  </repositories> 	
 
 	<build>
 

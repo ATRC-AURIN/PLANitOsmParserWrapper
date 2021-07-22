@@ -10,6 +10,7 @@ import org.planit.converter.network.NetworkConverterFactory;
 import org.planit.logging.Logging;
 import org.planit.matsim.converter.PlanitMatsimNetworkWriter;
 import org.planit.matsim.converter.PlanitMatsimNetworkWriterFactory;
+import org.planit.matsim.converter.PlanitMatsimWriter;
 import org.planit.osm.converter.network.PlanitOsmNetworkReader;
 import org.planit.osm.converter.network.PlanitOsmNetworkReaderFactory;
 import org.planit.utils.args.ArgumentParser;
@@ -24,13 +25,13 @@ import org.planit.utils.exceptions.PlanItException;
  * The following command line options are available which should be provided such that the key is preceded with a double hyphen and the value follows directly (if any) with any number of 
  * spaces in between (no hyphens), e.g., {@code --<key> <value>}:
  * <ul>
- * <li>--input with value which is either a local file location or a URL that we can stream
- * <li>--country with value that is used to initialise defaults (speed limits, projection etc.), if absent global defaults are used 
- * <li>--bbox with value as "long long lat lat" valid bounding box that restrict the input further (if at all)</li>
- * <li>--fidelity with value "coarse/medium/fine" if absent defaults to medium</li>
- * <li>--rail with value "yes/no" if absent defaults to no</li>
- * <li>--output with value {@code <path>} output directory, if absent defaults to directory this application was invoked from
- * <li>
+ * <li>--input {@code <path>} to input file. Either a local file or a URL that we can stream</li>
+ * <li>--country format: Name of the country. Default: Global. Used to initialise defaults (speed limits, projection etc.)</li> 
+ * <li>--bbox format: long1 long2 lat1 lat2. Bounding box that restrict the input further (if at all)</li>
+ * <li>--fidelity Options: [coarse, medium, fine]. Default: medium. Indicates fidelity of generated MATSim network based on predefined settings</li>
+ * <li>--rail Options: [yes, no]. Default: no</li>
+ * <li>--output format {@code <path>} to output directory. Default: directory this application was invoked from</li>
+ * <li>--clean_network Options: [true, false]. Default "true". Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed</li>
  * </ul>
  * In addition for the OSM reader we limit ourselves to:
  * <ul>
@@ -109,6 +110,30 @@ public class PlanitAurinParserMain {
     MatsimNetworkWriterConfigurationHelper.parseOutputDirectory(matsimNetworkWriter, keyValueMap);
   }
   
+  /**
+   * Let MATSim clean the created network and persist it under a separate name with "_cleaned" added to the file name
+   * 
+   * @param matsimNetworkWriter to extract location of current (uncleaned) MATSim network from
+   */
+  private static void createCleanedNetwork(PlanitMatsimNetworkWriter matsimNetworkWriter) {
+    Path originalNetworkFilePath = 
+        Path.of(
+            matsimNetworkWriter.getSettings().getOutputDirectory(),
+            matsimNetworkWriter.getSettings().getOutputFileName()+PlanitMatsimWriter.DEFAULT_XML_FILE_EXTENSION);
+    Path cleanedNetworkFilePath = 
+        Path.of(
+            matsimNetworkWriter.getSettings().getOutputDirectory(),
+            matsimNetworkWriter.getSettings().getOutputFileName()+"_cleaned"+PlanitMatsimWriter.DEFAULT_XML_FILE_EXTENSION);
+    LOGGER.info(String.format("Cleaning MATSim network %s",originalNetworkFilePath.toString()));    
+    org.matsim.run.NetworkCleaner.main(new String[] {originalNetworkFilePath.toString(), cleanedNetworkFilePath.toString()});
+    LOGGER.info(String.format("Persisted cleaned MATSim network to %s",cleanedNetworkFilePath));
+    
+    /* do the same for detailed geometry, although it is not a problem we do not because cleaning only removes (potentially) unreachable links */
+    if(matsimNetworkWriter.getSettings().isGenerateDetailedLinkGeometryFile()) {
+      LOGGER.fine(String.format("Generated detailed geometry based on uncleaned MATSim network (contains more links than available) ",cleanedNetworkFilePath));
+    }
+  }
+
   /** Path from which application was invoked */
   public static final Path CURRENT_PATH = Path.of("");    
 
@@ -142,7 +167,7 @@ public class PlanitAurinParserMain {
         /* osm network reader */
         PlanitOsmNetworkReader osmNetworkReader = PlanitOsmNetworkReaderFactory.create(countryName);
         configureNetworkReader(osmNetworkReader, keyValueMap);
-
+        
         /* Matsim network writer */
         PlanitMatsimNetworkWriter matsimNetworkWriter = PlanitMatsimNetworkWriterFactory.create(
             MatsimNetworkWriterConfigurationHelper.MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), countryName);
@@ -150,6 +175,11 @@ public class PlanitAurinParserMain {
 
         /* perform conversion */
         NetworkConverterFactory.create(osmNetworkReader, matsimNetworkWriter).convert();
+        
+        /* when cleaned network is requested an additional cleaned network file is created */
+        if(OsmNetworkReaderConfigurationHelper.parseCleanNetwork(keyValueMap)) {
+          createCleanedNetwork(matsimNetworkWriter);
+        }
       }
     } catch (Exception e) {
       LOGGER.severe(e.getMessage());
