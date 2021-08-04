@@ -1,0 +1,10 @@
+/target
+/.classpath
+/.settings
+/.project
+/dependency-reduced-pom.xml
+/logs
+/bin
+/doc
+/docs
+/output

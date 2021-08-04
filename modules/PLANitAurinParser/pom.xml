@@ -2,11 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-    <groupId>org.planit.parentpom</groupId>
-    <artifactId>PLANitParentPom</artifactId>
-		<version>0.2.1a1</version>
-	</parent>
+  <version>0.2.1a1</version>
 
 	<groupId>org.planit.aurin.parser</groupId>
 	<artifactId>PLANitAurinParser</artifactId>
@@ -19,48 +15,68 @@
 	<url>http://maven.apache.org</url>
 	
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  
     <matsim.version>12.0</matsim.version>
+    <planit.version>${project.version}</planit.version>
+    <junit.version>4.13-beta-2</junit.version>
+    
+    <!-- Maven plugin properties -->
+    <maven.compiler.java.version>11</maven.compiler.java.version>    
+    
+    <!-- Maven plugin versions -->
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
+    <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+    <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>    
+    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>  
+    
   </properties>	
 
 	<dependencies>
 	
-	  <!-- version same as parent pom -->
-    <dependency>
-      <groupId>org.planit.aurin.parser</groupId>
-      <artifactId>PLANitParserWrapper</artifactId>
-      <version>0.2.1a1</version>
-    </dependency>   
-
 		<!-- version inherited from parent -->
 		<dependency>
 			<groupId>org.planit.utils</groupId>
 			<artifactId>PLANitUtils</artifactId>
+			<version>${planit.version}</version>
 		</dependency>
 		
 		<!-- version inherited from parent -->
 		<dependency>
 			<groupId>org.planit</groupId>
 			<artifactId>PLANit</artifactId>
+			<version>${planit.version}</version>
 		</dependency>
 				 
     <!-- version inherited from parent -->    
     <dependency>
       <groupId>org.planit.osm</groupId>
       <artifactId>PLANitOSM</artifactId>
+      <version>${planit.version}</version>
     </dependency>
     
     <!-- version inherited from parent -->    
     <dependency>
       <groupId>org.planit.matsim</groupId>
       <artifactId>PLANitMatsim</artifactId>
+      <version>${planit.version}</version>
     </dependency>    
     
     <!-- https://mvnrepository.com/artifact/org.matsim.contrib/osm -->
     <dependency>
-        <groupId>org.matsim.contrib</groupId>
-        <artifactId>osm</artifactId>
+        <groupId>org.matsim</groupId>
+        <artifactId>matsim</artifactId>
       <version>${matsim.version}</version>
     </dependency>     
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- only used locally for testing so not an actual dependency for using the API -->
+      <optional>true</optional>
+      <version>${junit.version}</version>
+    </dependency>       
 
 	</dependencies>
 	
@@ -68,14 +84,9 @@
     <repository>
       <!-- Repository for MATSim releases (MATSim is not on Maven central) -->
       <id>matsim</id>
-      <url>https://dl.bintray.com/matsim/matsim</url>
+      <url>https://repo.matsim.org/repository/matsim</url>
     </repository>
-    <repository>
-      <!-- For MATSim snapshots: -->
-      <id>ojo-snapshots</id>
-      <url>https://oss.jfrog.org/libs-snapshot</url>
-    </repository> 
-  </repositories> 	
+  </repositories>  
 
 	<build>
 
@@ -88,6 +99,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resources.plugin.version}</version>
 				<executions>
 					<!-- inherit from parent plugin management configuration -->
 					<execution>
@@ -99,6 +111,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -114,7 +127,7 @@
 
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>${maven.javadoc.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>javadoc-jar</id>
@@ -134,6 +147,7 @@
                 <dependencySourceInclude>org.planit.utils:*</dependencySourceInclude>
                 <dependencySourceInclude>org.planit.osm:*</dependencySourceInclude>
                 <dependencySourceInclude>org.planit.matsim:*</dependencySourceInclude>
+                <dependencySourceInclude>org.planit.aurin.parser:*</dependencySourceInclude>
               </dependencySourceIncludes>			
 						</configuration>
 					</execution>
@@ -176,7 +190,13 @@
 									<includes>
 										<include>**</include>
 									</includes>
-								</filter>																															
+								</filter>		
+                <filter>
+                  <artifact>org.planit.aurin.parser:PLANitAurinParser</artifact>
+                  <includes>
+                    <include>**</include>
+                  </includes>
+                </filter> 																																					
 								<!-- INCLUDE components that are invoked via reflection explicitly 
 									so that they are not excluded by the minimisation of the jar -->
 								<filter>
@@ -267,6 +287,17 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <source>${maven.compiler.java.version}</source>
+            <target>${maven.compiler.java.version}</target>
+            <release>${maven.compiler.java.version}</release>
+          </configuration>
+        </plugin>			
 
 		</plugins>
 	</build>

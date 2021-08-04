@@ -38,12 +38,43 @@ where it can be used to prettify the link shapes (instead of being restricted to
 
 ## General Maven build information 
 
+This wrapper is setup to be a parent project as well as containing the Java sources for this wrapper. The structure is setup such that all can be compiled in one go. To make this possible we make use of git modules combined with Maven modules. The following maven modules are defined:
+
+* PLANitAurinParser
+    * contains the source code of the wrapper
+* PLANitParentPom
+    * contains the versions of PLANit and its dependencies, no source
+* PLANitUtils
+    * generic utilities
+* PLANit
+    * core PLANit repo
+* PLANitOSM
+    * code for parsing Open Street Map networks
+* PLANitMatsim
+    * code for prsisting networks in MATSim format  
+
+To be able to compile them properly and in the right order, we use Git modules to reference the external PLANit repos. The PLANitAurinParser on the other hand is embedded in this repo and is therefore NOT present as a git module, it is part of this repo directly. In order to build all modules in one go we require a top-level pom in the root dir of this repo. Run this pom.xml to conduct a build.
+
+Since all maven modules require PLANitPArentPom to extract consistent version dependencies, they need to be placed in a subdirectory (locally) of the modules. therefor we define the gitmodules such that they all end up within the PLANitPArentPom git module like the following:
+
+* pom.xml
+    * PLANitParentPom pom.xml
+        * PLANitUtils
+        * PLANit
+        * PLANitOSM
+        * PLANitMatsim
+    * (PLANitAurinParser not a git module, only a Maven local module)
+
+This way all PLANitXXX repos have the correct local hierarchy that Maven expects to be able to build them while they have PLANitParentPom as their parent (without the PLANitPArentPom repo having these child repos). To ensure that we do not accidentally commit these child repos into the PALNitParentPom repo the .gitignore of PLANitPArentPom excludes all direct subdirs starting with /PLANit.
+
+### Building an executable Jar
+
+To run the wrapper in a stand-alone fashion (not from IDE for example) all dependencies need to be made available within the final jar. To support this a separate pom.xml is provided in the project that builds such a jar.
+
 ### Maven parent
 
 Projects need to be built from Maven before they can be run. The common maven configuration can be found in the PLANitParentPom project which acts as the parent for this project's pom.xml.
 
 > Make sure you install the PLANitParentPom pom.xml before conducting a maven build (in Eclipse) on this project, otherwise it cannot find the references dependencies, plugins, and other resources.
 
-### FAT Jar
 
-To run the wrapper in a stand-alone fashion (not from IDE) all dependencies need to be made available within the runnable jar. To support this a separate pom.xml is provided in the project that builds such a jar.

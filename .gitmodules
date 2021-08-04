@@ -1,15 +1,15 @@
 [submodule "modules/PLANitParentPom"]
 	path = modules/PLANitParentPom
 	url = https://github.com/AURIN-OFFICE/PLANitParentPom.git
-[submodule "modules/PLANitUtils"]
-	path = modules/PLANitUtils
+[submodule "modules/PLANitParentPom/PLANitUtils"]
+	path = modules/PLANitParentPom/PLANitUtils
 	url = https://github.com/AURIN-OFFICE/PLANitUtils.git
-[submodule "modules/PLANit"]
-	path = modules/PLANit
+[submodule "modules/PLANitParentPom/PLANit"]
+	path = modules/PLANitParentPom/PLANit
 	url = https://github.com/AURIN-OFFICE/PLANit.git
-[submodule "modules/PLANitMatsim"]
-	path = modules/PLANitMatsim
+[submodule "modules/PLANitParentPom/PLANitMatsim"]
+	path = modules/PLANitParentPom/PLANitMatsim
 	url = https://github.com/AURIN-OFFICE/PLANitMatsim.git
-[submodule "modules/PLANitOSM"]
-	path = modules/PLANitOSM
+[submodule "modules/PLANitParentPom/PLANitOSM"]
+	path = modules/PLANitParentPom/PLANitOSM
 	url = https://github.com/AURIN-OFFICE/PLANitOSM.git

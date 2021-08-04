@@ -347,7 +347,7 @@ public class OsmNetworkReaderConfigurationHelper {
 
   /** set flag indicating whether or not the newly created MATSim network should be passed through the MATSim NetworkCleaner
    * to ensure all links are reachable, e.g. ends of one way motorways at the edge of the network. Can be useful since MATSim
-   * assigns trips to the enarest node and if this is a one way link near the edge it is otherwise possible no route into the
+   * assigns trips to the nearest node and if this is a one way link near the edge it is otherwise possible no route into the
    * rest of the network can be created, causing MATSim to crash.
    * 
    * @param keyValueMap to extract from
