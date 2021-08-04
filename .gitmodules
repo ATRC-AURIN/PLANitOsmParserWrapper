@@ -1,0 +1,21 @@
+[submodule "gitmodules/planitparentpom"]
+	path = gitmodules/planitparentpom
+	url = https://github.com/AURIN-OFFICE/PLANitParentPom.git
+	branch = master	
+[submodule "gitmodules/planitutils"]
+	path = gitmodules/planitutils
+	url = https://github.com/AURIN-OFFICE/PLANitUtils.git
+	branch = master
+[submodule "gitmodules/planit"]
+	path = gitmodules/planit
+	url = https://github.com/AURIN-OFFICE/PLANit.git
+	branch = master	
+[submodule "gitmodules/planitmatsim"]
+	path = gitmodules/planitmatsim
+	url = https://github.com/AURIN-OFFICE/PLANitMatsim.git
+	branch = master		
+[submodule "gitmodules/planitosm"]
+	path = gitmodules/planitosm
+	url = https://github.com/AURIN-OFFICE/PLANitOSM.git
+	branch = master		
+	
