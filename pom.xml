@@ -22,16 +22,12 @@
 			<comments>A slightly modified version of a modified BSD license</comments>
 		</license>
 	</licenses>
-		
+				
 	<modules>
-	  <!-- dependencies that are not available from central repo, so added as submodules-->
+	  <!-- PLANit dependencies that are not available from central repo, so added as submodules-->
 	  <module>modules/PLANitParentPom</module>
-	  <module>modules/PLANitParentPom/PLANitUtils</module>
-	  <module>modules/PLANitParentPom/PLANit</module>
-	  <module>modules/PLANitParentPom/PLANitMatsim</module>
-	  <module>modules/PLANitParentPom/PLANitOSM</module>
 	  <!-- actual content of this repo -->
     <module>modules/PLANitAurinParser</module>	  
-  </modules>
+  </modules>    
 		 	
 </project>

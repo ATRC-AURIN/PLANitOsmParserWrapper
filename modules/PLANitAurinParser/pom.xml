@@ -29,7 +29,10 @@
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
     <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>    
-    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>  
+    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version> 
+    
+    <!-- override jts versionas it is inconsistent between planit and matsim dependencies -->
+    <jts.version>1.17.1</jts.version> 
     
   </properties>	
 
@@ -76,7 +79,13 @@
       <!-- only used locally for testing so not an actual dependency for using the API -->
       <optional>true</optional>
       <version>${junit.version}</version>
-    </dependency>       
+    </dependency>    
+    
+     <dependency>
+     <groupId>org.locationtech.jts</groupId>
+     <artifactId>jts-core</artifactId>
+     <version>${jts.version}</version>
+   </dependency>         
 
 	</dependencies>
 	
