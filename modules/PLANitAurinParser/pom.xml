@@ -174,7 +174,8 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<minimizeJar>true</minimizeJar>
+						  <!-- no minimisation for now as it breaks matsim/hibernate that depend on reflection -->
+							<minimizeJar>false</minimizeJar>
 							<filters>
 								<filter>
 									<artifact>org.planit.utils:PLANitUtils</artifact>
