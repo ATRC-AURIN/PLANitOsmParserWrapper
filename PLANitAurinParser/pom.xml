@@ -2,17 +2,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-  <version>0.2.1a1</version>
+	<version>0.2.1a1</version>
 
 	<groupId>org.planit.aurin.parser</groupId>
 	<artifactId>PLANitAurinParser</artifactId>
 	<description>Generate ParserWrapper fat jar. Gathers all dependencies and packages them in one jar
 	 This can be used for using the wrapper in a stand alone fashion without any access to sources of project builds
-  </description>
+	</description>
 	<packaging>jar</packaging>
 
 	<name>PLANitAurinParser</name>
-	<url>http://maven.apache.org</url>
 	
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +30,7 @@
     <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>    
     <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version> 
     
-    <!-- override jts versionas it is inconsistent between planit and matsim dependencies -->
+    <!-- override jts version as it is inconsistent between planit and matsim dependencies -->
     <jts.version>1.17.1</jts.version> 
     
   </properties>	
@@ -52,40 +51,40 @@
 			<version>${planit.version}</version>
 		</dependency>
 				 
-    <!-- version inherited from parent -->    
-    <dependency>
-      <groupId>org.planit.osm</groupId>
-      <artifactId>PLANitOSM</artifactId>
-      <version>${planit.version}</version>
-    </dependency>
+		<!-- version inherited from parent -->    
+		<dependency>
+		  <groupId>org.planit.osm</groupId>
+		  <artifactId>PLANitOSM</artifactId>
+		  <version>${planit.version}</version>
+		</dependency>
+		
+		<!-- version inherited from parent -->    
+		<dependency>
+		  <groupId>org.planit.matsim</groupId>
+		  <artifactId>PLANitMatsim</artifactId>
+		  <version>${planit.version}</version>
+		</dependency>    
     
-    <!-- version inherited from parent -->    
-    <dependency>
-      <groupId>org.planit.matsim</groupId>
-      <artifactId>PLANitMatsim</artifactId>
-      <version>${planit.version}</version>
-    </dependency>    
-    
-    <!-- https://mvnrepository.com/artifact/org.matsim.contrib/osm -->
-    <dependency>
-        <groupId>org.matsim</groupId>
-        <artifactId>matsim</artifactId>
-      <version>${matsim.version}</version>
-    </dependency>     
-    
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <!-- only used locally for testing so not an actual dependency for using the API -->
-      <optional>true</optional>
-      <version>${junit.version}</version>
-    </dependency>    
-    
-     <dependency>
-     <groupId>org.locationtech.jts</groupId>
-     <artifactId>jts-core</artifactId>
-     <version>${jts.version}</version>
-   </dependency>         
+		<!-- https://mvnrepository.com/artifact/org.matsim.contrib/osm -->
+		<dependency>
+			<groupId>org.matsim</groupId>
+			<artifactId>matsim</artifactId>
+		  <version>${matsim.version}</version>
+		</dependency>     
+		
+		<dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <!-- only used locally for testing so not an actual dependency for using the API -->
+		  <optional>true</optional>
+		  <version>${junit.version}</version>
+		</dependency>    
+		
+		 <dependency>
+		 <groupId>org.locationtech.jts</groupId>
+		 <artifactId>jts-core</artifactId>
+		 <version>${jts.version}</version>
+	   </dependency>         
 
 	</dependencies>
 	
@@ -298,16 +297,16 @@
 				</executions>
 			</plugin>
 			
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.plugin.version}</version>
-          <configuration>
-            <source>${maven.compiler.java.version}</source>
-            <target>${maven.compiler.java.version}</target>
-            <release>${maven.compiler.java.version}</release>
-          </configuration>
-        </plugin>			
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-compiler-plugin</artifactId>
+         <version>${maven.compiler.plugin.version}</version>
+         <configuration>
+           <source>${maven.compiler.java.version}</source>
+           <target>${maven.compiler.java.version}</target>
+           <release>${maven.compiler.java.version}</release>
+         </configuration>
+       </plugin>			
 
 		</plugins>
 	</build>
