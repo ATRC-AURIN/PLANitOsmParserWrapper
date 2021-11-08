@@ -1,4 +1,4 @@
-package org.planit.aurin.parser;
+package org.goplanit.aurin.parser;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.locationtech.jts.geom.Envelope;
-import org.planit.osm.converter.network.PlanitOsmNetworkReader;
-import org.planit.osm.tags.OsmHighwayTags;
-import org.planit.osm.tags.OsmRailModeTags;
-import org.planit.osm.tags.OsmRoadModeTags;
-import org.planit.utils.exceptions.PlanItException;
-import org.planit.utils.locale.CountryNames;
-import org.planit.utils.misc.CharacterUtils;
-import org.planit.utils.misc.UrlUtils;
-import org.planit.utils.resource.ResourceUtils;
+import org.goplanit.osm.converter.network.OsmNetworkReader;
+import org.goplanit.osm.tags.OsmHighwayTags;
+import org.goplanit.osm.tags.OsmRailModeTags;
+import org.goplanit.osm.tags.OsmRoadModeTags;
+import org.goplanit.utils.exceptions.PlanItException;
+import org.goplanit.utils.locale.CountryNames;
+import org.goplanit.utils.misc.CharacterUtils;
+import org.goplanit.utils.misc.UrlUtils;
+import org.goplanit.utils.resource.ResourceUtils;
 
 /**
  * Helper methods to configure the OSM network reader based on user arguments provided for this wrapper.
@@ -188,7 +188,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param osmNetworkReader to configure
    * @throws PlanItException thrown if null inputs
    */
-  private static void configureMediumOsmNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+  private static void configureMediumOsmNetworkFidelity(final OsmNetworkReader osmNetworkReader) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     /* medium level detail */
@@ -202,7 +202,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param osmNetworkReader to configure
    * @throws PlanItException thrown if null inputs
    */
-  private static void configureCoarseOsmNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+  private static void configureCoarseOsmNetworkFidelity(final OsmNetworkReader osmNetworkReader) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     /* coarse level detail */
@@ -215,7 +215,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param osmNetworkReader to configure
    * @throws PlanItException thrown if null inputs
    */  
-  private static void configureFineOsmNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+  private static void configureFineOsmNetworkFidelity(final OsmNetworkReader osmNetworkReader) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     /* fine level detail */
@@ -230,7 +230,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param keyValueMap to extract fidelity configuration from
    * @throws PlanItException thrown if null inputs
    */
-  public static void parseNetworkFidelity(final PlanitOsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseNetworkFidelity(final OsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
@@ -273,7 +273,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param keyValueMap to extract rail parser configuration from
    * @throws PlanItException thrown if null inputs
    */
-  public static void parseRailActivation(final PlanitOsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseRailActivation(final OsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
@@ -298,7 +298,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param keyValueMap to extract bounding box configuration from
    * @throws PlanItException thrown if null inputs
    */
-  public static void parseBoundingBox(final PlanitOsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseBoundingBox(final OsmNetworkReader osmNetworkReader, final Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
@@ -327,7 +327,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param keyValueMap to extract input source from
    * @throws PlanItException thrown if error
    */
-  public static void parseInputsource(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseInputsource(OsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
@@ -369,7 +369,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param osmNetworkReader to configure
    * @throws PlanItException thrown if null inputs
    */
-  public static void restrictToDefaultRoadModes(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+  public static void restrictToDefaultRoadModes(final OsmNetworkReader osmNetworkReader) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     osmNetworkReader.getSettings().getHighwaySettings().deactivateAllRoadModesExcept(OSM_ROAD_MODES);
@@ -380,7 +380,7 @@ public class OsmNetworkReaderConfigurationHelper {
    * @param osmNetworkReader to configure
    * @throws PlanItException thrown if null inputs
    */
-  public static void restrictToDefaultRailModes(final PlanitOsmNetworkReader osmNetworkReader) throws PlanItException {
+  public static void restrictToDefaultRailModes(final OsmNetworkReader osmNetworkReader) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     
     osmNetworkReader.getSettings().getRailwaySettings().deactivateAllRailModesExcept(OSM_RAIL_MODES);

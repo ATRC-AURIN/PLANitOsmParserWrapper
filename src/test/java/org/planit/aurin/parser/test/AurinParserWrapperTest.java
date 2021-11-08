@@ -2,8 +2,8 @@ package org.planit.aurin.parser.test;
 
 import static org.junit.Assert.fail;
 
+import org.goplanit.aurin.parser.PlanitAurinParserMain;
 import org.junit.Test;
-import org.planit.aurin.parser.PlanitAurinParserMain;
 
 
 /**

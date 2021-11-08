@@ -1,4 +1,4 @@
-package org.planit.aurin.parser;
+package org.goplanit.aurin.parser;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -6,16 +6,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.planit.converter.network.NetworkConverterFactory;
-import org.planit.logging.Logging;
-import org.planit.matsim.converter.PlanitMatsimNetworkWriter;
-import org.planit.matsim.converter.PlanitMatsimNetworkWriterFactory;
-import org.planit.matsim.converter.PlanitMatsimWriter;
-import org.planit.osm.converter.network.PlanitOsmNetworkReader;
-import org.planit.osm.converter.network.PlanitOsmNetworkReaderFactory;
-import org.planit.utils.args.ArgumentParser;
-import org.planit.utils.args.ArgumentStyle;
-import org.planit.utils.exceptions.PlanItException;
+import org.goplanit.converter.network.NetworkConverterFactory;
+import org.goplanit.logging.Logging;
+import org.goplanit.matsim.converter.MatsimNetworkWriter;
+import org.goplanit.matsim.converter.MatsimNetworkWriterFactory;
+import org.goplanit.matsim.converter.MatsimWriter;
+import org.goplanit.osm.converter.network.OsmNetworkReader;
+import org.goplanit.osm.converter.network.OsmNetworkReaderFactory;
+import org.goplanit.utils.args.ArgumentParser;
+import org.goplanit.utils.args.ArgumentStyle;
+import org.goplanit.utils.exceptions.PlanItException;
 
 /**
  * Access point for running a PLANit network parser that converts an OSM file to a MATSim compatible network. for now
@@ -78,7 +78,7 @@ public class PlanitAurinParserMain {
    * @param keyValueMap arguments containing configuration choices
    * @throws PlanItException thrown if error
    */
-  private static void configureNetworkReader(PlanitOsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
+  private static void configureNetworkReader(OsmNetworkReader osmNetworkReader, Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(osmNetworkReader, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");    
 
@@ -99,7 +99,7 @@ public class PlanitAurinParserMain {
    * @param keyValueMap arguments containing configuration choices
    * @throws PlanItException thrown if null inputs
    */
-  private static void configureNetworkWriter(PlanitMatsimNetworkWriter matsimNetworkWriter, Map<String, String> keyValueMap) throws PlanItException {
+  private static void configureNetworkWriter(MatsimNetworkWriter matsimNetworkWriter, Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(matsimNetworkWriter, "Matsim network writer null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
 
@@ -115,15 +115,15 @@ public class PlanitAurinParserMain {
    * 
    * @param matsimNetworkWriter to extract location of current (uncleaned) MATSim network from
    */
-  private static void createCleanedNetwork(PlanitMatsimNetworkWriter matsimNetworkWriter) {
+  private static void createCleanedNetwork(MatsimNetworkWriter matsimNetworkWriter) {
     Path originalNetworkFilePath = 
         Path.of(
             matsimNetworkWriter.getSettings().getOutputDirectory(),
-            matsimNetworkWriter.getSettings().getOutputFileName()+PlanitMatsimWriter.DEFAULT_XML_FILE_EXTENSION);
+            matsimNetworkWriter.getSettings().getOutputFileName()+MatsimWriter.DEFAULT_FILE_NAME_EXTENSION);
     Path cleanedNetworkFilePath = 
         Path.of(
             matsimNetworkWriter.getSettings().getOutputDirectory(),
-            matsimNetworkWriter.getSettings().getOutputFileName()+"_cleaned"+PlanitMatsimWriter.DEFAULT_XML_FILE_EXTENSION);
+            matsimNetworkWriter.getSettings().getOutputFileName()+"_cleaned"+MatsimWriter.DEFAULT_FILE_NAME_EXTENSION);
     LOGGER.info(String.format("Cleaning MATSim network %s",originalNetworkFilePath.toString()));    
     org.matsim.run.NetworkCleaner.main(new String[] {originalNetworkFilePath.toString(), cleanedNetworkFilePath.toString()});
     LOGGER.info(String.format("Persisted cleaned MATSim network to %s",cleanedNetworkFilePath));
@@ -165,11 +165,11 @@ public class PlanitAurinParserMain {
         
         String countryName = OsmNetworkReaderConfigurationHelper.getCountry(keyValueMap);
         /* osm network reader */
-        PlanitOsmNetworkReader osmNetworkReader = PlanitOsmNetworkReaderFactory.create(countryName);
+        OsmNetworkReader osmNetworkReader = OsmNetworkReaderFactory.create(countryName);
         configureNetworkReader(osmNetworkReader, keyValueMap);
         
         /* Matsim network writer */
-        PlanitMatsimNetworkWriter matsimNetworkWriter = PlanitMatsimNetworkWriterFactory.create(
+        MatsimNetworkWriter matsimNetworkWriter = MatsimNetworkWriterFactory.create(
             MatsimNetworkWriterConfigurationHelper.MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), countryName);
         configureNetworkWriter(matsimNetworkWriter, keyValueMap);
 

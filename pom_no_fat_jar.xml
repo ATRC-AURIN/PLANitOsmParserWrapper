@@ -3,15 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<parent>
-    <groupId>org.planit.aurin.parserwrapper</groupId>
-    <artifactId>PLANitAurinParserWrapper</artifactId>
-		<version>0.2.1a1</version>
-	</parent>
+  <groupId>org.goplanit.aurin.parser</groupId>
+  <artifactId>planit-aurin-parser</artifactId>
+  <version>0.0.1</version>
 	
-	<groupId>org.planit.aurin.parser</groupId>
-	<artifactId>PLANitAurinParser</artifactId>
-	<description>Expose functionality used by Aurin ATRC platform regarding the OSM to MATSim converter</description>
+	<groupId>org.goplanit.aurin.parser</groupId>
+	<artifactId>planit-aurin-parser</artifactId>
+	<description>Expose functionality used by AURIN ATRC platform regarding the OSM to MATSim converter</description>
 	<packaging>jar</packaging>
 
 	<name>PLANitAurinParser</name>
@@ -21,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   
     <matsim.version>12.0</matsim.version>
-    <planit.version>${project.version}</planit.version>
+    <planit.version>0.3.0</planit.version>
     <junit.version>4.13-beta-2</junit.version>
     
     <!-- Maven plugin properties -->
@@ -47,20 +45,14 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.planit</groupId>
-			<artifactId>PLANit</artifactId>
+			<groupId>org.goplanit.osm</groupId>
+			<artifactId>planit-osm</artifactId>
 			<version>${planit.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.planit.osm</groupId>
-			<artifactId>PLANitOSM</artifactId>
-			<version>${planit.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.planit.matsim</groupId>
-			<artifactId>PLANitMatsim</artifactId>
+			<groupId>org.goplanit.matsim</groupId>
+			<artifactId>planit-matsim</artifactId>
 			<version>${planit.version}</version>
 		</dependency>
 		
@@ -85,6 +77,14 @@
       <id>matsim</id>
       <url>https://repo.matsim.org/repository/matsim</url>
     </repository>
+    
+    <!-- PLANit repository -->
+    <repository>
+      <id>planit-repository.goplanit.org</id>
+      <name>PLANit Repository</name>
+      <url>http://repository.goplanit.org</url>
+    </repository>   
+      
   </repositories>   	
 
   <build>
@@ -114,7 +114,6 @@
         <configuration>
           <archive>
             <manifest>
-              <!-- no need for class path since dependencies are all included in shaded jar -->
               <addClasspath>false</addClasspath>
               <mainClass>org.planit.aurin.parser.PlanitAurinParserMain</mainClass>
             </manifest>

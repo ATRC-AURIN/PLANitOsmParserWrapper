@@ -1,10 +1,10 @@
-package org.planit.aurin.parser;
+package org.goplanit.aurin.parser;
 
 import java.nio.file.Path;
 import java.util.Map;
 
-import org.planit.matsim.converter.PlanitMatsimNetworkWriter;
-import org.planit.utils.exceptions.PlanItException;
+import org.goplanit.matsim.converter.MatsimNetworkWriter;
+import org.goplanit.utils.exceptions.PlanItException;
 
 /**
  * Helper methods to configure the MATSim network writer based on user arguments provided for this wrapper.
@@ -30,7 +30,7 @@ public class MatsimNetworkWriterConfigurationHelper {
    * @param keyValueMap to extract information from
    * @throws PlanItException thrown if error
    */
-  public static void parseOutputDirectory(PlanitMatsimNetworkWriter matsimNetworkWriter, Map<String, String> keyValueMap) throws PlanItException {
+  public static void parseOutputDirectory(MatsimNetworkWriter matsimNetworkWriter, Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(matsimNetworkWriter, "Matsim network writer null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
