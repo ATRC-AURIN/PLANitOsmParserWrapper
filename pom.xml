@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<matsim.version>12.0</matsim.version>
-		<planit.version>0.3.0</planit.version>
+		<planit.version>0.3.1a1</planit.version>
 		<junit.version>4.13-beta-2</junit.version>
 
 		<!-- Maven plugin properties -->
@@ -135,7 +135,7 @@
 							<!-- no need for class path since dependencies are all included in 
 								shaded jar -->
 							<addClasspath>false</addClasspath>
-							<mainClass>org.planit.aurin.parser.PlanitAurinParserMain</mainClass>
+							<mainClass>org.goplanit.aurin.parser.PlanitAurinParserMain</mainClass>
 						</manifest>
 						<manifestEntries>
 						</manifestEntries>
