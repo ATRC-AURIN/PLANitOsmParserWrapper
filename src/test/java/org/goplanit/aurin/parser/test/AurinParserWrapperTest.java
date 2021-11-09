@@ -1,4 +1,4 @@
-package org.planit.aurin.parser.test;
+package org.goplanit.aurin.parser.test;
 
 import static org.junit.Assert.fail;
 
