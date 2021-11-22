@@ -3,16 +3,16 @@ package org.goplanit.aurin.parser;
 import java.nio.file.Path;
 import java.util.Map;
 
-import org.goplanit.matsim.converter.MatsimNetworkWriter;
+import org.goplanit.matsim.converter.MatsimNetworkWriterSettings;
 import org.goplanit.utils.exceptions.PlanItException;
 
 /**
- * Helper methods to configure the MATSim network writer based on user arguments provided for this wrapper.
+ * Helper methods to configure the MATSim writer based on user arguments provided for this wrapper.
  * 
  * @author markr
  *
  */
-public class MatsimNetworkWriterConfigurationHelper {
+public class MatsimWriterConfigurationHelper {
   
   //----------------------------------------------------
   //--------OUTPUT PATH --------------------------------
@@ -26,16 +26,16 @@ public class MatsimNetworkWriterConfigurationHelper {
 
   /** The output directory to use. If absent nothing is set and it is assumed the output directory is set upon creation of the writer
    * 
-   * @param matsimNetworkWriter to configure
+   * @param settings to configure
    * @param keyValueMap to extract information from
    * @throws PlanItException thrown if error
    */
-  public static void parseOutputDirectory(MatsimNetworkWriter matsimNetworkWriter, Map<String, String> keyValueMap) throws PlanItException {
-    PlanItException.throwIfNull(matsimNetworkWriter, "Matsim network writer null");
+  public static void parseOutputDirectory(MatsimNetworkWriterSettings settings, Map<String, String> keyValueMap) throws PlanItException {
+    PlanItException.throwIfNull(settings, "Matsim network writer settings null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
     if(keyValueMap.containsKey(OUTPUT_PATH_KEY)) {
-      matsimNetworkWriter.getSettings().setOutputDirectory(keyValueMap.get(OUTPUT_PATH_KEY));  
+      settings.setOutputDirectory(keyValueMap.get(OUTPUT_PATH_KEY));  
     }    
     
   }
