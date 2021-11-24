@@ -35,9 +35,9 @@ import org.goplanit.utils.exceptions.PlanItException;
  * <li>--output Format {@code <path>} to output directory. Default: directory this application was invoked from</li>
  * <li>--clean_network Options: [true, false]. Default "true". Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed</li>
  * <li>--rail Options: [yes, no]. Default: no. Parse rail tracks when set to <i>yes</i>, in which case modes <i>train, tram, light_rail</i> are automatically activated </li>
- * <li>--pt-infra Options: [yes, no]. Default: no. Parse pt infrastructure when set to <i>yes</i>, i.e., bus stops, (train) stations, and platforms. By default activates <i>bus, train, tram, light_rail</i></li>
- * <li>--deactivate-mode Format: Comma separated list of names of the OSM modes. Explicitly exclude a mode from being parsed</li>
- * <li>--activate-mode Format: Comma separated list of names of the OSM modes. Default: motor_car. Explicitly activate a mode for parsing</li>
+ * <li>--pt-infra Options: [yes, no]. Default: no. Parse pt infrastructure when set to <i>yes</i>, i.e., bus stops, (train) stations, and platforms. By default activates <i>bus, train, tram, light_rail</i> as well as setting --rail to yes</li>
+ * <li>--deactivate-mode Format: Comma separated list of names of the OSM modes. Default: N/A. Explicitly exclude mode(s) from being parsed</li>
+ * <li>--activate-mode Format: Comma separated list of names of the OSM modes. Default: motor_car. Explicitly activate mode(s) for parsing</li>
  * </ul>
  * 
  * When {@code pt-infra yes} or {@code rail yes}, this will implicitly activates the mentioned modes because it is assumed one would only activate these options when these modes are present and required. If one or more
@@ -84,7 +84,7 @@ public class PlanitAurinParserMain {
    * @param keyValueMap arguments containing configuration choices
    * @throws PlanItException thrown if error
    */
-  private static void configureNetworkReaderSettings(OsmNetworkReaderSettings settings, Map<String, String> keyValueMap) throws PlanItException {
+  private static void configureReaderSettings(OsmNetworkReaderSettings settings, Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(settings, "OSM network reader settings null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");    
     
@@ -103,7 +103,7 @@ public class PlanitAurinParserMain {
    * @param keyValueMap arguments containing configuration choices
    * @throws PlanItException thrown if null inputs
    */
-  private static void configureNetworkWriter(MatsimNetworkWriterSettings settings, Map<String, String> keyValueMap) throws PlanItException {
+  private static void configureWriterSettings(MatsimNetworkWriterSettings settings, Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(settings, "Matsim network writer settings null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
 
@@ -157,8 +157,8 @@ public class PlanitAurinParserMain {
     OsmNetworkReaderConfigurationHelper.restrictToDefaultRoadModes(osmNetworkReader.getSettings());
     
     /* configure */    
-    configureNetworkReaderSettings(osmNetworkReader.getSettings(), keyValueMap);    
-    configureNetworkWriter(matsimNetworkWriter.getSettings(), keyValueMap);
+    configureReaderSettings(osmNetworkReader.getSettings(), keyValueMap);    
+    configureWriterSettings(matsimNetworkWriter.getSettings(), keyValueMap);
 
     /* perform conversion */
     NetworkConverterFactory.create(osmNetworkReader, matsimNetworkWriter).convert();
@@ -185,11 +185,11 @@ public class PlanitAurinParserMain {
         MatsimWriterConfigurationHelper.MATSIM_OUTPUT_PATH.toAbsolutePath().toString(), countryName);
     
     /* default modes for network conversion */
-    OsmIntermodalReaderConfigurationHelper.restrictToDefaultRoadModes(osmIntermodalReader.getSettings());    
+    OsmIntermodalReaderConfigurationHelper.restrictToDefaultModes(osmIntermodalReader.getSettings());    
             
     /* configure */
-    configureNetworkReaderSettings(osmIntermodalReader.getSettings().getNetworkSettings(), keyValueMap);    
-    configureNetworkWriter(matsimIntermodalWriter.getSettings().getNetworkSettings(), keyValueMap);
+    configureReaderSettings(osmIntermodalReader.getSettings().getNetworkSettings(), keyValueMap);    
+    configureWriterSettings(matsimIntermodalWriter.getSettings().getNetworkSettings(), keyValueMap);
 
     /* perform conversion */
     IntermodalConverterFactory.create(osmIntermodalReader, matsimIntermodalWriter).convert();
@@ -237,8 +237,9 @@ public class PlanitAurinParserMain {
         }        
       }
     } catch (Exception e) {
-      LOGGER.severe(e.getMessage());
-      LOGGER.severe("Unable to execute parser, terminating");
+      LOGGER.severe(e.getMessage());      
+      e.printStackTrace();
+      LOGGER.severe("Unable to execute parser, terminating");      
     }
 
   }

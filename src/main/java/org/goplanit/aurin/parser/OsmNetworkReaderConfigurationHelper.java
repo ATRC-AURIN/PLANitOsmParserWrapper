@@ -249,7 +249,8 @@ public class OsmNetworkReaderConfigurationHelper {
     }
   }
 
-  /** Configure whether or not to activate the rail parse
+  /** Configure whether or not to activate the rail parser. Adopt the default when not explicitly set, meaning that it defaults to deactivation unless we are parsing public transport infrastructure
+   * in which case the default is to activate the rail
    * 
    * @param settings to configure
    * @param keyValueMap to extract rail parser configuration from
@@ -259,7 +260,8 @@ public class OsmNetworkReaderConfigurationHelper {
     PlanItException.throwIfNull(settings, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
-    String railActicationValue = keyValueMap.getOrDefault(RAIL_PARSER_ACTIVATION_KEY, RAIL_PARSER_DEACTIVATE);
+    final String defaultRailActivation = OsmReaderConfigurationHelper.isParsePublicTransportInfrastructure(keyValueMap) ? RAIL_PARSER_ACTIVATE : RAIL_PARSER_DEACTIVATE; 
+    String railActicationValue = keyValueMap.getOrDefault(RAIL_PARSER_ACTIVATION_KEY, defaultRailActivation);
     switch (railActicationValue) {
       case RAIL_PARSER_ACTIVATE:
         settings.activateRailwayParser(true);
