@@ -2,6 +2,10 @@
 
 Wrapper for Aurin services to access exposed functionality of PLANit network converters (OSM to MATSim).
 
+> This repository has been implemented by the University of Sydney for the ATRC project. The ATRC is a project lead by the Australian Urban Research Infrastructure Network (AURIN) and is supported by the Australian Research Data Commons (ARDC). AURIN and the ARDC are funded by the National Collaborative Research Infrastructure Strategy (NCRIS).  
+ATRC Investment: https://doi.org/10.47486/PL104  
+ATRC RAiD: https://hdl.handle.net/102.100.100/102.100.100/399880  
+
 ## Getting started
 
 The simplest way to use this wrapper is to simply build this project via its pom.xml (mvn clean install). This will collect all (PLANit) dependencies as well as compile the local wrapper code base. The pom.xml is configured to generate an executable jar in its target output dir. After successfully building this project the executable jar can be found under path/to/PLANitOsmParserWrapper/target/planit-aurin-parser_version_.jar. It is this jar that can be run from the command line. Below you will find an example on how to conduct a simple conversion based on an OSM URL with a bounding box for a small area in Germany
@@ -11,8 +15,6 @@ java -jar planit-aurin-parser-version.jar --input "https://api.openstreetmap.org
 ```
 
 Below a list of the available command line options that are currently exposed. The PLANit OSM parser has many more options than currently made available. If you wish to use those, then we suggest not using this wrapper but instead directly utilise the PLANit platform instead.
-
-> Implementation of this wrapper is partially funded by the University of Sydney and the Australian Transport Research Cloud ([ATRC](https://ardc.edu.au/project/australian-transport-research-cloud-atrc/)). ATRC is a project instigated by the Australian Research Data Cloud ([ARDC](www.ardc.edu.au)).
 
 ## Command line options
 
