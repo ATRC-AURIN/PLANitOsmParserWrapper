@@ -119,9 +119,9 @@ public class OsmReaderConfigurationHelper {
   
   /** Parse the input source, this must be present, if not an exception is thrown 
    * 
-   * @param osmNetworkReader to configure
    * @param keyValueMap to extract input source from
    * @return inputsource as either an absolute local path or an streamable external location in string form
+   * @throws PlanItException throws when error
    */
   public static String parseInputsource(Map<String, String> keyValueMap) throws PlanItException {
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");

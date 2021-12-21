@@ -22,7 +22,7 @@ public class AurinParserWrapperTest {
     try {
 
       // Run with settings using stream, equivalent to: 
-      // java -jar PLANitAurinParser.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
+      // java -jar planit-aurin-parser-<version>.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
       //  --output ./output/Germany
       PlanitAurinParserMain.main(
           new String[]{
@@ -50,7 +50,7 @@ public class AurinParserWrapperTest {
     try {
 
       // Run with settings using stream, equivalent to: 
-      // java -jar PLANitAurinParser.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
+      // java -jar planit-aurin-parser-<version>.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
       //  --clean_network no --output ./output/Germany
       PlanitAurinParserMain.main(
           new String[]{
@@ -80,7 +80,7 @@ public class AurinParserWrapperTest {
     try {
 
       // Run with settings using stream, equivalent to: 
-      // java -jar PLANitAurinParser.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
+      // java -jar planit-aurin-parser-<version>.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" -- country Germany --fidelity fine
       //  --pt-infra yes --clean_network no --output ./output/Germany
       PlanitAurinParserMain.main(
           new String[]{
@@ -112,7 +112,7 @@ public class AurinParserWrapperTest {
     try {
 
       // Run with settings using stream, equivalent to: 
-      // java -jar PLANitAurinParser.jar --input "./Melbourne/melbourne.osm.pbf" --country Australia --fidelity coarse --output "./output/Melbourne"
+      // java -jar planit-aurin-parser-<version>.jar --input "./Melbourne/melbourne.osm.pbf" --country Australia --fidelity coarse --output "./output/Melbourne"
       PlanitAurinParserMain.main(
           new String[]{
               "--input", 
@@ -139,7 +139,7 @@ public class AurinParserWrapperTest {
     try {
 
       // Run with settings using stream, equivalent to: 
-      // java -jar PLANitAurinParser.jar --input "./Melbourne/melbourne.osm.pbf" --country Australia --fidelity fine --pt-infra yes --deactivate-mode light_rail,tram --output "./output/Melbourne_pt"
+      // java -jar planit-aurin-parser-<version>.jar --input "./Melbourne/melbourne.osm.pbf" --country Australia --fidelity fine --pt-infra yes --deactivate-mode light_rail,tram --output "./output/Melbourne_pt"
       PlanitAurinParserMain.main(
           new String[]{
               "--input", 

@@ -11,7 +11,7 @@ ATRC RAiD: https://hdl.handle.net/102.100.100/102.100.100/399880
 The simplest way to use this wrapper is to simply build this project via its pom.xml (mvn clean install). This will collect all (PLANit) dependencies as well as compile the local wrapper code base. The pom.xml is configured to generate an executable jar in its target output dir. After successfully building this project the executable jar can be found under path/to/PLANitOsmParserWrapper/target/planit-aurin-parser_version_.jar. It is this jar that can be run from the command line. Below you will find an example on how to conduct a simple conversion based on an OSM URL with a bounding box for a small area in Germany
 
 ```
-java -jar planit-aurin-parser-version.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" --country Germany --fidelity fine  --output ./output/Germany
+java -jar planit-aurin-parser-<version>.jar --input "https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204" --country Germany --fidelity fine  --output ./output/Germany
 ```
 
 Below a list of the available command line options that are currently exposed. The PLANit OSM parser has many more options than currently made available. If you wish to use those, then we suggest not using this wrapper but instead directly utilise the PLANit platform instead.

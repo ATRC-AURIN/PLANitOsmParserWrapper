@@ -41,9 +41,9 @@ import org.goplanit.utils.exceptions.PlanItException;
  * </ul>
  * 
  * When {@code pt-infra yes} or {@code rail yes}, this will implicitly activates the mentioned modes because it is assumed one would only activate these options when these modes are present and required. If one or more
- * of these modes are not to be parsed, they can be explicitly disabled via {@deactivate-mode theMode}. Conversely, OSM modes can be manually activated via {@code activate-mode theMode}.
+ * of these modes are not to be parsed, they can be explicitly disabled via {@code deactivate-mode theMode}. Conversely, OSM modes can be manually activated via {@code activate-mode theMode}.
  * <p>
- * OSM mode names are expected to be based on {@link https://wiki.openstreetmap.org/wiki/Key:access}. When a mode is both activated and deactivated, the deactivation takes precedence.
+ * OSM mode names are expected to be based on @see <a href="https://wiki.openstreetmap.org/wiki/Key:access">OSM wiki: access</a>. When a mode is both activated and deactivated, the deactivation takes precedence.
  * <p>
  * To better support visualisation for the MATSim output we by default activate the detailed geometry in case the user would like to visualise the results using VIA
  * where it can be used to prettify the link shapes (instead of being restricted to start/end nodes only). Further, road modes are mapped to MATSim mode "car" whereas
