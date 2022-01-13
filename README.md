@@ -24,15 +24,13 @@ The following command line options are available which should be provided such t
  * **--country**  *Format: Name of the country.* Default: Global. Used to initialise defaults (speed limits, projection etc.) 
  * **--bbox**     *Format: long1 long2 lat1 lat2.* Bounding box that restricts the geospatial area of the original input further (if at all)
  * **--fidelity** *Format: options [coarse, medium, fine].* Default: medium. Indicates fidelity of generated MATSim network based on predefined settings
- * **--rail** *Format: options: [yes, no].* Default: no
+ * **--rail** *Format: options: [yes, no].* Default: no. Parse rail tracks when set to *yes*, in which case modes *train, tram, light_rail* are automatically activated  
+ * **--ptinfra** *Format: Options [yes, no].* Default: no. Parse pt infrastructure when set to *yes*, i.e., bus stops, (train) stations, and platforms. By default activates *bus, train, tram, light_rail* as well as setting --rail default to *yes*
+ * **--deactivate-mode** *Format <osmMode1, osmMode2, etc>.* Default: N/A. Explicitly exclude mode(s) from being parsed
+ * **--activate-mode** *Format <osmMode1, osmMode2, etc>.* Default: N/A. Explicitly activate additional mode(s) to the default activated *motor_car* for parsing
  * **--output** *Format <path to output directory>.* Default: working directory this application was invoked from
  * **--clean_network** *Format: options: [true, false].* Default true. Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed
  
- In addition we currently limit the used modes to:
- 
- * road modes: *motor_car* support only mapped to MATSim mode *car*
- * rail modes: *train, tram, light rail* only (when rail is activated) --> mapped to MATSim mode *pt*
-
 ## Detailed MATSim geometry
 
 For the MATSim output we by default activate the detailed geometry in case the user would like to visualise the results using VIA

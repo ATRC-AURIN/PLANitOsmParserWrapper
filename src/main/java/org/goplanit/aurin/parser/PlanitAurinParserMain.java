@@ -33,14 +33,14 @@ import org.goplanit.utils.exceptions.PlanItException;
  * <li>--bbox Format: long1 long2 lat1 lat2. Bounding box that restrict the input further (if at all)</li>
  * <li>--fidelity Options: [coarse, medium, fine]. Default: medium. Indicates fidelity of generated MATSim network based on predefined settings</li>
  * <li>--output Format {@code <path>} to output directory. Default: directory this application was invoked from</li>
- * <li>--clean_network Options: [true, false]. Default "true". Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed</li>
+ * <li>--clean Options: [yes, no]. Default yes. Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed</li>
  * <li>--rail Options: [yes, no]. Default: no. Parse rail tracks when set to <i>yes</i>, in which case modes <i>train, tram, light_rail</i> are automatically activated </li>
- * <li>--pt-infra Options: [yes, no]. Default: no. Parse pt infrastructure when set to <i>yes</i>, i.e., bus stops, (train) stations, and platforms. By default activates <i>bus, train, tram, light_rail</i> as well as setting --rail to yes</li>
- * <li>--deactivate-mode Format: Comma separated list of names of the OSM modes. Default: N/A. Explicitly exclude mode(s) from being parsed</li>
- * <li>--activate-mode Format: Comma separated list of names of the OSM modes. Default: motor_car. Explicitly activate mode(s) for parsing</li>
+ * <li>--ptinfra Options: [yes, no]. Default: no. Parse pt infrastructure when set to <i>yes</i>, i.e., bus stops, (train) stations, and platforms. By default activates <i>bus, train, tram, light_rail</i> as well as setting --rail to yes</li>
+ * <li>--rmmode Format: Comma separated list of names of the OSM modes. Default: N/A. Explicitly exclude mode(s) from being parsed</li>
+ * <li>--addmode Format: Comma separated list of names of the OSM modes. Default: motor_car. Explicitly activate mode(s) for parsing</li>
  * </ul>
  * 
- * When {@code pt-infra yes} or {@code rail yes}, this will implicitly activates the mentioned modes because it is assumed one would only activate these options when these modes are present and required. If one or more
+ * When {@code ptinfra yes} or {@code rail yes}, this will implicitly activates the mentioned modes because it is assumed one would only activate these options when these modes are present and required. If one or more
  * of these modes are not to be parsed, they can be explicitly disabled via {@code deactivate-mode theMode}. Conversely, OSM modes can be manually activated via {@code activate-mode theMode}.
  * <p>
  * OSM mode names are expected to be based on @see <a href="https://wiki.openstreetmap.org/wiki/Key:access">OSM wiki: access</a>. When a mode is both activated and deactivated, the deactivation takes precedence.

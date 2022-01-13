@@ -3,6 +3,7 @@ package org.goplanit.aurin.parser;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,6 +12,7 @@ import org.goplanit.osm.tags.OsmHighwayTags;
 import org.goplanit.osm.tags.OsmRailModeTags;
 import org.goplanit.osm.tags.OsmRoadModeTags;
 import org.goplanit.utils.exceptions.PlanItException;
+import org.goplanit.utils.misc.StringUtils;
 import org.locationtech.jts.geom.Envelope;
 
 /**
@@ -20,16 +22,19 @@ import org.locationtech.jts.geom.Envelope;
  *
  */
 public class OsmNetworkReaderConfigurationHelper {
+  
+  /** Logger to use */
+  private static final Logger LOGGER = Logger.getLogger(OsmNetworkReaderConfigurationHelper.class.getCanonicalName());
     
   //----------------------------------------------------
   //--------ROAD MODES----------------------------------
   //----------------------------------------------------
   
   /** Key to signify explicit activation of (additional) OSM modes */
-  private static final String ACTIVATE_MODE_KEY = "activate-mode";
+  private static final String ACTIVATE_MODE_KEY = "addmode";
   
   /** Key to signify explicit deactivation of OSM modes */
-  private static final String DEACTIVATE_MODE_KEY = "deactivate-mode";  
+  private static final String DEACTIVATE_MODE_KEY = "rmmode";  
   
   /**
    * The supported OSM road modes. These include:
@@ -154,7 +159,7 @@ public class OsmNetworkReaderConfigurationHelper {
   //----------------------------------------------------
   
   /** Key reflecting the location of the input file or URL */
-  public static final String CLEAN_NETWORK_KEY = "clean_network";    
+  public static final String CLEAN_NETWORK_KEY = "clean";    
   
   /** do clean the network */
   private static final String CLEAN_NETWORK_YES = "yes";
@@ -232,7 +237,10 @@ public class OsmNetworkReaderConfigurationHelper {
     PlanItException.throwIfNull(settings, "OSM network reader null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
-    String fidelityValue = keyValueMap.getOrDefault(FIDELITY_KEY, FIDELITY_MEDIUM);
+    String fidelityValue = keyValueMap.get(FIDELITY_KEY);
+    if(StringUtils.isNullOrBlank(fidelityValue)) {
+      fidelityValue = FIDELITY_MEDIUM;
+    }
     switch (fidelityValue) {
       case FIDELITY_FINE:
         configureFineOsmNetworkFidelity(settings);
@@ -261,7 +269,10 @@ public class OsmNetworkReaderConfigurationHelper {
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
     final String defaultRailActivation = OsmReaderConfigurationHelper.isParsePublicTransportInfrastructure(keyValueMap) ? RAIL_PARSER_ACTIVATE : RAIL_PARSER_DEACTIVATE; 
-    String railActicationValue = keyValueMap.getOrDefault(RAIL_PARSER_ACTIVATION_KEY, defaultRailActivation);
+    String railActicationValue = keyValueMap.get(RAIL_PARSER_ACTIVATION_KEY);
+    if(StringUtils.isNullOrBlank(railActicationValue)) {
+      railActicationValue = defaultRailActivation;
+    }
     switch (railActicationValue) {
       case RAIL_PARSER_ACTIVATE:
         settings.activateRailwayParser(true);
@@ -302,12 +313,15 @@ public class OsmNetworkReaderConfigurationHelper {
     if(keyValueMap.containsKey(ACTIVATE_MODE_KEY)) {
       List<String> activateOsmModes = List.of(keyValueMap.get(ACTIVATE_MODE_KEY).split(","));
       for(String activatedOsmMode : activateOsmModes) {
+        if(StringUtils.isNullOrBlank(activatedOsmMode)) {
+          continue;
+        }
         if(OsmRoadModeTags.isRoadModeTag(activatedOsmMode)) {
           settings.getHighwaySettings().activateOsmRoadMode(activatedOsmMode);
         }else if(OsmRailModeTags.isRailModeTag(activatedOsmMode)) {
           settings.getRailwaySettings().activateOsmRailMode(activatedOsmMode);
         }else {
-          throw new PlanItException("Invalid mode %s to activate encountered",activatedOsmMode);
+          LOGGER.warning(String.format("Unsupported OSM mode %s to activate encountered %s, ignored",activatedOsmMode));
         }
       }
     }   
@@ -316,12 +330,16 @@ public class OsmNetworkReaderConfigurationHelper {
     if(keyValueMap.containsKey(DEACTIVATE_MODE_KEY)) {
       List<String> deactivateOsmModes = List.of(keyValueMap.get(DEACTIVATE_MODE_KEY).split(","));
       for(String deactivatedOsmMode : deactivateOsmModes) {
+        if(StringUtils.isNullOrBlank(deactivatedOsmMode)) {
+          continue;
+        }
+        
         if(OsmRoadModeTags.isRoadModeTag(deactivatedOsmMode)) {
           settings.getHighwaySettings().deactivateOsmRoadMode(deactivatedOsmMode);
         }else if(OsmRailModeTags.isRailModeTag(deactivatedOsmMode)) {
           settings.getRailwaySettings().deactivateOsmRailMode(deactivatedOsmMode);
         }else {
-          throw new PlanItException("Invalid mode %s to deactivate encountered",deactivatedOsmMode);
+          LOGGER.warning(String.format("Unsupported OSM mode %s to deactivate encountered %s, ignored",deactivatedOsmMode));
         }        
       }
     }       
@@ -341,8 +359,12 @@ public class OsmNetworkReaderConfigurationHelper {
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
     if(keyValueMap.containsKey(CLEAN_NETWORK_KEY)) {
-      return CLEAN_NETWORK_YES.equals(keyValueMap.get(CLEAN_NETWORK_KEY)) ? true : false;
+      String clean = keyValueMap.get(CLEAN_NETWORK_KEY);
+      if(!StringUtils.isNullOrBlank(clean)) {
+        return CLEAN_NETWORK_YES.equals(keyValueMap.get(CLEAN_NETWORK_KEY)) ? true : false;  
+      }      
     }      
+    
     /* default */
     return true;
   }

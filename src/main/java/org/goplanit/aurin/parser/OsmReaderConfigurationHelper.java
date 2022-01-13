@@ -2,10 +2,13 @@ package org.goplanit.aurin.parser;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.logging.Logger;
+
 import org.locationtech.jts.geom.Envelope;
 import org.goplanit.utils.exceptions.PlanItException;
 import org.goplanit.utils.locale.CountryNames;
 import org.goplanit.utils.misc.CharacterUtils;
+import org.goplanit.utils.misc.StringUtils;
 import org.goplanit.utils.misc.UrlUtils;
 import org.goplanit.utils.resource.ResourceUtils;
 
@@ -16,6 +19,9 @@ import org.goplanit.utils.resource.ResourceUtils;
  *
  */
 public class OsmReaderConfigurationHelper {
+  
+  /** logger to use */
+  private static final Logger LOGGER = Logger.getLogger(OsmReaderConfigurationHelper.class.getCanonicalName());
   
   //----------------------------------------------------
   //--------INPUT SOURCE -----------------------------------
@@ -37,13 +43,13 @@ public class OsmReaderConfigurationHelper {
   //----------------------------------------------------
   
   /** configuration key to determine if public transport (non-road) infrastructure should be parsed or not */
-  private static final String PUBLIC_TRANSPORT_INFRASTRUCTURE_KEY = "pt-infra";
+  private static final String PUBLIC_TRANSPORT_INFRASTRUCTURE_KEY = "ptinfra";
   
   /** Activation value to parse public transport (non-road), e.g., "yes" */
   private static final String PUBLIC_TRANSPORT_INFRASTRUCTURE_ACTIVATE = "yes";
   
   /** Deactivation value to not parse public transport (non-road), e.g., "no" */
-  private static final String RPUBLIC_TRANSPORT_INFRASTRUCTURE_DEACTIVATE = "no";  
+  private static final String PUBLIC_TRANSPORT_INFRASTRUCTURE_DEACTIVATE = "no";  
     
   //----------------------------------------------------
   //--------BOUNDING BOX--------------------------------
@@ -53,6 +59,7 @@ public class OsmReaderConfigurationHelper {
   private static final String BOUNDING_BOX_KEY = "bbox";  
   
   /** Verify if we are supposed to parse public transport infrastructure
+   * 
    * @param keyValueMap to extract information from
    * @return true when parsing false otherwise
    * @throws PlanItException thrown if error
@@ -64,11 +71,18 @@ public class OsmReaderConfigurationHelper {
       return false;
     }  
     
-    final String ptInfraValue = keyValueMap.get(PUBLIC_TRANSPORT_INFRASTRUCTURE_KEY);
+    String ptInfraValue = keyValueMap.get(PUBLIC_TRANSPORT_INFRASTRUCTURE_KEY);
+    if(StringUtils.isNullOrBlank(ptInfraValue)) {
+      ptInfraValue = PUBLIC_TRANSPORT_INFRASTRUCTURE_DEACTIVATE;
+    }
+    
+    
     if(ptInfraValue.equals(PUBLIC_TRANSPORT_INFRASTRUCTURE_ACTIVATE)) {
       return true;
-    }else if(ptInfraValue.equals(RPUBLIC_TRANSPORT_INFRASTRUCTURE_DEACTIVATE)) {
+    }else if(ptInfraValue.equals(PUBLIC_TRANSPORT_INFRASTRUCTURE_DEACTIVATE)) {
       return false;  
+    }else {
+      LOGGER.warning(String.format("Unsupported value %s encountered for key %s",ptInfraValue, PUBLIC_TRANSPORT_INFRASTRUCTURE_KEY));
     }
     return false;
   }
@@ -103,6 +117,9 @@ public class OsmReaderConfigurationHelper {
     }
     
     String boundingBoxValue = keyValueMap.get(BOUNDING_BOX_KEY);
+    if(StringUtils.isNullOrBlank(boundingBoxValue)){
+      return null;
+    }
     String[] boundingBoxOrdinates = boundingBoxValue.split(CharacterUtils.COMMA.toString());
     if(boundingBoxOrdinates.length != 4) {
       throw new PlanItException("Bounding box is expected to have comma separated values but found %s", boundingBoxValue);
