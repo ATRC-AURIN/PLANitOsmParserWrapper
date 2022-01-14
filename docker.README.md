@@ -9,13 +9,12 @@ In this file we keep track how to use docker with this Java repository. It is a 
 * There is no official jdk-11 and Alpine Docker image, so we use the one from adoptopenjdk, i.e., adoptopenjdk/openjdk11:jre-11.0.6_10-alpine
 
 Restrictions to date:
-  
-* We only copy the locally created fat jar (from the maven clean install on pom.xml) as the only file added to the openjdk-alpine image.
-* There is a hard coded call to an example command line configuration that is being run. This is to be extended to a configurable run via environment parameters.
+
+* The jar is not built as part of the docker image creation, it needs to be build before the docker image can be created. We then copy the locally created fat jar (from the maven clean install on pom.xml) as the only file added to the openjdk-alpine image.
 
 # Environmental variables
 
-The docker image has the exact same environmental variables as the Java wrapper has (see README.md), except that all variables are capatilised, i.e., *--input* translates to *INPUT*, which in turn requires the -e switch to signal to docker it is an environmental variable.
+The docker image has the exact same environmental variables as the Java wrapper has (see README.md), except that all variables are capatilised, i.e., *--input* translates to *INPUT*, which in turn requires the *-e* switch to signal to docker it is an environmental variable.
 
 In addition one more variable is present:
 

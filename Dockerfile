@@ -3,21 +3,18 @@ FROM adoptopenjdk/openjdk11:jre-11.0.6_10-alpine
 
 # PLANit version
 ENV VERSION 0.0.1a1
-# input URL or file, FILE NOT SUPPORTED YET
-ENV INPUT https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204
+# input URL: FILE NOT SUPPORTED YET
+ENV INPUT ""
+
 ENV BBOX ""
-# remove Germany once it works!!!!!!!!!!!!
-ENV COUNTRY Germany
-# remove fine once it works!!!!!!!!!!!!
-ENV FIDELITY fine
+ENV COUNTRY ""
+ENV FIDELITY ""
 ENV RAIL ""
-# remove yes once it works!!!!!!!!!!!!
-ENV PTINFRA yes
+ENV PTINFRA ""
 ENV RMMODE ""
 ENV ADDMODE ""
-ENV CLEAN no
-# remove Germany once it works!!!!!!!!!!!!
-ENV OUTPUT ./output/Germany_pt
+ENV CLEAN ""
+ENV OUTPUT ""
 
 RUN mkdir /opt/jar
 

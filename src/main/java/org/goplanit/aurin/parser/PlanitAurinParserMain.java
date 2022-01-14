@@ -28,16 +28,16 @@ import org.goplanit.utils.exceptions.PlanItException;
  * The following command line options are available which should be provided such that the key is preceded with a double hyphen and the value follows directly (if any) with any number of 
  * spaces in between (no hyphens), e.g., {@code --<key> <value>}:
  * <ul>
- * <li>--input {@code <path>} to input file. Either a local file or a URL that we can stream</li>
- * <li>--country Format: Name of the country. Default: Global. Used to initialise defaults (speed limits, projection etc.)</li> 
- * <li>--bbox Format: long1 long2 lat1 lat2. Bounding box that restrict the input further (if at all)</li>
+ * <li>--input    Format: {@code path-to/file}. Either a local file or a URL that we can stream</li>
+ * <li>--country  Format: Name of the country. Default: Global. Used to initialise defaults (speed limits, projection etc.)</li> 
+ * <li>--bbox     Format: long1 long2 lat1 lat2. Bounding box that restrict the input further (if at all)</li>
  * <li>--fidelity Options: [coarse, medium, fine]. Default: medium. Indicates fidelity of generated MATSim network based on predefined settings</li>
- * <li>--output Format {@code <path>} to output directory. Default: directory this application was invoked from</li>
- * <li>--clean Options: [yes, no]. Default yes. Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed</li>
- * <li>--rail Options: [yes, no]. Default: no. Parse rail tracks when set to <i>yes</i>, in which case modes <i>train, tram, light_rail</i> are automatically activated </li>
- * <li>--ptinfra Options: [yes, no]. Default: no. Parse pt infrastructure when set to <i>yes</i>, i.e., bus stops, (train) stations, and platforms. By default activates <i>bus, train, tram, light_rail</i> as well as setting --rail to yes</li>
- * <li>--rmmode Format: Comma separated list of names of the OSM modes. Default: N/A. Explicitly exclude mode(s) from being parsed</li>
- * <li>--addmode Format: Comma separated list of names of the OSM modes. Default: motor_car. Explicitly activate mode(s) for parsing</li>
+ * <li>--output   Format {@code <path>}. Default: "." the directory this application was invoked from</li>
+ * <li>--clean    Options: [yes, no]. Default yes. Result is persisted as separate network with postfix "_cleaned" where potentially unreachable links and vertices are removed</li>
+ * <li>--rail     Options: [yes, no]. Default: no. Parse rail tracks when set to <i>yes</i>, in which case modes <i>train, tram, light_rail</i> are automatically activated </li>
+ * <li>--ptinfra  Options: [yes, no]. Default: no. Parse pt infrastructure when set to <i>yes</i>, i.e., bus stops, (train) stations, and platforms. By default activates <i>bus, train, tram, light_rail</i> as well as setting --rail to yes</li>
+ * <li>--rmmode   Format: Comma separated list of names of the OSM modes. Default: N/A. Explicitly exclude mode(s) from being parsed</li>
+ * <li>--addmode  Format: Comma separated list of names of the OSM modes. Default: motor_car. Explicitly activate mode(s) for parsing</li>
  * </ul>
  * 
  * When {@code ptinfra yes} or {@code rail yes}, this will implicitly activates the mentioned modes because it is assumed one would only activate these options when these modes are present and required. If one or more

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.goplanit.matsim.converter.MatsimNetworkWriterSettings;
 import org.goplanit.utils.exceptions.PlanItException;
+import org.goplanit.utils.misc.StringUtils;
 
 /**
  * Helper methods to configure the MATSim writer based on user arguments provided for this wrapper.
@@ -34,7 +35,7 @@ public class MatsimWriterConfigurationHelper {
     PlanItException.throwIfNull(settings, "Matsim network writer settings null");
     PlanItException.throwIfNull(keyValueMap, "Configuration information null");
     
-    if(keyValueMap.containsKey(OUTPUT_PATH_KEY)) {
+    if(keyValueMap.containsKey(OUTPUT_PATH_KEY) && !StringUtils.isNullOrBlank(keyValueMap.get(OUTPUT_PATH_KEY))) {
       settings.setOutputDirectory(keyValueMap.get(OUTPUT_PATH_KEY));  
     }    
     
