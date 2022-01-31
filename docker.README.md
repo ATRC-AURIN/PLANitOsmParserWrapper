@@ -50,28 +50,26 @@ docker run -e INPUT=https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.
 
 ## Test run script with volumes
 
-Below an example script of how to run while using volumes (on Windows), with only the output volume requires as we are using a streaming input
+When using volumes we conform to the following convention and assumptions:
+
+* Your environment has two fixed persistent directories: VM_INPUT and VM_OUTPUT where  the container reads and outputs data. Often Docker would be run from a virtual machine (VM) hence this naming convention. 
+* It is expected that these two directories are available in the working directory from which the run command is invoked. If not this script needs to be altered to reflect these changes
+* Before Docker Container runs, the input files should be present in the VM_INPUT directory.
+* The docker container runs and creates the output files in VM_OUTPUT directory
+
+Below an example script of how to run while using volumes (on Windows), with only the output volume requires as we are using a streaming input. 
 
 ```
-###########################
-# Assumptions:
-#
-#  1) Your environment has two fixed persistent directories:
-#  VM_INPUT and VM_OUTPUT where  the container reads and outputs data. Often Docker 
-#  would be run from a virtual machine (VM) hence this naming convention. 
-#  2) It is expected that these two directories are available in the working directory from 
-#  which the run command is invoked. If not this script needs to be altered to reflect these 
-#  changes.
-#  3) Before Docker Container runs, the input files should be present in the VM_INPUT directory.
-#  4) The docker container runs and creates the output files in VM_OUTPUT directory
-#
-##########################
-
-#remove leftover containers
-docker rm  osmparserwrapper:latest
+docker rm  osmparserwrapper
 docker run --name osmparserwrapper  -e INPUT=https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204 -e COUNTRY=Germany -e FIDELITY=fine -e PTINFRA=yes -e CLEAN=no -e OUTPUT=/output -v ${PWD}/VM_INPUT:/input/:rw  -v ${PWD}/VM_OUTPUT:/output/:rw  osmparserwrapper:latest
 ```
 
+And one where it is assumed the Melbourne test resource is copied to the input volume directory and readily available
+
+```
+docker rm  osmparserwrapper
+docker run --name osmparserwrapper  -e INPUT=/input/melbourne.osm.pbf -e COUNTRY=Australia -e FIDELITY=coarse -e CLEAN=yes -e OUTPUT=/output -v ${PWD}/VM_INPUT:/input/:rw  -v ${PWD}/VM_OUTPUT:/output/:rw  osmparserwrapper:latest
+```
 
 # Resources
 
