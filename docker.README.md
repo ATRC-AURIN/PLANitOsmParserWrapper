@@ -21,9 +21,7 @@ In addition one more variable is present:
 * *VERSION*, with default to the latest released version of this repository, so normally there is no need to use this variable
  
 
-# Cheatsheet of Docker commands to use this repo:
-
-**build the docker image**
+# Building a Docker image of this repo this repo:
 
 From root dir of repo, build will use the Dockerfile file to perform the build
 
@@ -31,7 +29,7 @@ From root dir of repo, build will use the Dockerfile file to perform the build
 docker build -t osmparserwrapper:latest .
 ```
 
-**inspect file structure of built image**
+# Inspecting file structure of built image**
 
 To inspect the file structure of an image (not container), export it to a tar file and then inspect the tar. An image cannot be
 inspected without running it otherwise.
@@ -40,13 +38,40 @@ inspected without running it otherwise.
 docker image save osmparserwrapper:latest > ./image.tar
 ```
 
-**running the created image **
+# Running the image **
 
-Below an example of running the image with some of the command line options set, analogous to the small streaming example in PLANitOSM
+## Test run without volumes
+
+Below an example of running the image with some of the command line options set, analogous to the small streaming example in PLANitOSM. It uses some test resources (files) directly included in the image, purely to test if the pipeline works independent of mounting any volumes (external I/O). If this works as expected, you are reader to instead pass in files and collect output via volumes
 
 ```
 docker run -e INPUT=https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204 -e COUNTRY=Germany -e FIDELITY=fine -e PTINFRA=yes -e CLEAN=no -e OUTPUT=./output/Germany_pt osmparserwrapper:latest
 ```
+
+## Test run script with volumes
+
+Below an example script of how to run while using volumes (on Windows), with only the output volume requires as we are using a streaming input
+
+```
+###########################
+# Assumptions:
+#
+#  1) Your environment has two fixed persistent directories:
+#  VM_INPUT and VM_OUTPUT where  the container reads and outputs data. Often Docker 
+#  would be run from a virtual machine (VM) hence this naming convention. 
+#  2) It is expected that these two directories are available in the working directory from 
+#  which the run command is invoked. If not this script needs to be altered to reflect these 
+#  changes.
+#  3) Before Docker Container runs, the input files should be present in the VM_INPUT directory.
+#  4) The docker container runs and creates the output files in VM_OUTPUT directory
+#
+##########################
+
+#remove leftover containers
+docker rm  osmparserwrapper:latest
+docker run --name osmparserwrapper  -e INPUT=https://api.openstreetmap.org/api/0.6/map?bbox=13.465661,52.504055,13.469817,52.506204 -e COUNTRY=Germany -e FIDELITY=fine -e PTINFRA=yes -e CLEAN=no -e OUTPUT=/output -v ${PWD}/VM_INPUT:/input/:rw  -v ${PWD}/VM_OUTPUT:/output/:rw  osmparserwrapper:latest
+```
+
 
 # Resources
 

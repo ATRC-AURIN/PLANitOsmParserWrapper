@@ -20,13 +20,15 @@ ENV CLEAN ""
 ENV OUTPUT ""
 #---------------------------------------------------
 
-RUN mkdir /opt/jar
+RUN mkdir -p /app/jar
+RUN mkdir  /input
+RUN mkdir  /output
 
 # copy application JAR (with libraries inside)
-COPY target/planit-aurin-parser-*.jar /opt/jar
+COPY target/planit-aurin-parser-*.jar /app/jar
 
 # specify default command
-CMD ["sh", "-c", "java -jar /opt/jar/planit-aurin-parser-${VERSION}.jar \ 
+CMD ["sh", "-c", "java -jar /app/jar/planit-aurin-parser-${VERSION}.jar \ 
   --input ${INPUT} \
   --bbox ${BBOX} \
   --country ${COUNTRY} \
