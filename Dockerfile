@@ -45,17 +45,5 @@ RUN mkdir  /output
 COPY --from=build /app/target/planit-aurin-parser-*.jar /app/jar 
 
 # specify default command
-CMD ["sh", "-c", "java -jar /app/jar/planit-aurin-parser-${VERSION}.jar \ 
-  --input ${INPUT} \
-  --bbox ${BBOX} \
-  --country ${COUNTRY} \
-  --fidelity ${FIDELITY} \
-  --rail ${RAIL} \
-  --ptinfra ${PTINFRA} \
-  --rmmode ${RMMODE} \
-  --addmode ${ADDMODE} \
-  --clean ${CLEAN} \
-  --output ${OUTPUT}\
-  "]
+CMD ["sh", "-c", "run_workflow_from_params.sh"]
 
-       
