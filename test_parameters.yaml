@@ -1,0 +1,28 @@
+inputs:
+  INPUT:
+    type: path
+    path: /data/inputs/melbourne.osm.pbf
+  COUNTRY:
+    type: value
+    value: Australia
+  FIDELITY:
+    type: value
+    value: coarse
+  CLEAN:
+    type: value
+    value: yes
+  OUTPUT:
+    type: path
+    path: /data/outputs
+outputs:
+  NETWORK:
+    type: xml
+    path: /data/outputs/network.xml
+  NETWORK_CLEANED:
+    type: xml
+    path: /data/outputs/network_cleaned.xml
+  NETWORK_GEOMETRY:
+    type: txt
+    path: /data/outputs/network_geometry.txt
+    # ...
+    
