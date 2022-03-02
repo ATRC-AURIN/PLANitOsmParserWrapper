@@ -42,8 +42,11 @@ RUN mkdir  /output
 #RUN cp /app/target/planit-aurin-parser-*.jar /app/jar
 
 # copy built jar from previous stage - intermediate results are discarded in image
-COPY --from=build /app/target/planit-aurin-parser-*.jar /app/jar 
+RUN mkdir -p /app/jar
+COPY --from=build /app/target/planit-aurin-parser-*.jar /app/jar/ 
+
+COPY run_workflow_from_params.sh .
 
 # specify default command
-CMD ["sh", "-c", "run_workflow_from_params.sh"]
+CMD ["sh", "./run_workflow_from_params.sh"]
 
