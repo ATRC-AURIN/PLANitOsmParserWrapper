@@ -4,17 +4,19 @@ In this file we keep track how to use docker with this Java repository. It is a 
 
 # Creating the docker image for OSM Parser Wrapper
 
-* We use the Dockerfile in the root dir to create the image.  
-* We use Alpine as the Linux distro since it is small
+* We use the Dockerfile in the root dir to create the image.
+* we use a multi-stage build where (i) we first build the Java source using Maven and pass on the generated jar file to the (i) packaging build  
+* In the packaging stage we use Alpine as the Linux distro since it is small, Maven is not included, only the Java run time
 * There is no official jdk-11 and Alpine Docker image, so we use the one from adoptopenjdk, i.e., adoptopenjdk/openjdk11:jre-11.0.6_10-alpine
 
-Restrictions to date:
-
-* The jar is not built as part of the docker image creation, it needs to be build before the docker image can be created. We then copy the locally created fat jar (from the maven clean install on pom.xml) as the only file added to the openjdk-alpine image.
+> The benefit of the multi-stage build is that we minimise the size of the final image and do not require a user to build the source manually, just
+building the image is enough to create a working container image 
 
 # Environmental variables
 
-The docker image has the exact same environmental variables as the Java wrapper has (see README.md), except that all variables are capatilised, i.e., *--input* translates to *INPUT*, which in turn requires the *-e* switch to signal to docker it is an environmental variable.
+The docker image supports the same command line variables as the Java wrapper has (see README.md), except that all variables are capitalised, i.e., *--input* translates to *INPUT*, which in turn requires the *-e* switch to signal to docker it is an environmental variable which in turn is passed onto the command line when invoking the application within the container. We provide the list of user configurable environment variables used during run-time in the designated section in the Docker build file, i.e., Dockerfile, in the root of the repository. 
+
+Example: `--input some_input` translates to `-e INPUT=some_input`   
 
 In addition one more variable is present:
 

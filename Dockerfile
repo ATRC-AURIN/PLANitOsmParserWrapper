@@ -20,10 +20,8 @@ FROM adoptopenjdk/openjdk11:jre-11.0.6_10-alpine
 # PLANit version
 ENV VERSION 0.0.1a1
 
-# user specific environmental variables to override:
+# Environmental variables to override during run if desired:
 #---------------------------------------------------
-
-# input URL: FILE NOT SUPPORTED YET
 ENV INPUT ""
 ENV BBOX ""
 ENV COUNTRY ""
