@@ -321,7 +321,7 @@ public class OsmNetworkReaderConfigurationHelper {
         }else if(OsmRailModeTags.isRailModeTag(activatedOsmMode)) {
           settings.getRailwaySettings().activateOsmRailMode(activatedOsmMode);
         }else {
-          LOGGER.warning(String.format("Unsupported OSM mode %s to activate encountered %s, ignored",activatedOsmMode));
+          LOGGER.warning(String.format("Unsupported OSM mode %s to activate encountered, ignored",activatedOsmMode));
         }
       }
     }   
@@ -339,7 +339,7 @@ public class OsmNetworkReaderConfigurationHelper {
         }else if(OsmRailModeTags.isRailModeTag(deactivatedOsmMode)) {
           settings.getRailwaySettings().deactivateOsmRailMode(deactivatedOsmMode);
         }else {
-          LOGGER.warning(String.format("Unsupported OSM mode %s to deactivate encountered %s, ignored",deactivatedOsmMode));
+          LOGGER.warning(String.format("Unsupported OSM mode %s to deactivate encountered, ignored",deactivatedOsmMode));
         }        
       }
     }       
