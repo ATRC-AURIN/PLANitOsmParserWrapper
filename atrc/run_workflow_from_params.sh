@@ -18,16 +18,16 @@ OUTPUT=$inputs_OUTPUT_path
 # ADDMODE =
 
 PARAMS=""
-[ ! -z "$INPUT" ] && PARAMS="${PARAMS} --input ${INPUT} "
-[ ! -z "$COUNTRY" ] && PARAMS="${PARAMS}--country ${COUNTRY} "
-[ ! -z "$FIDELITY" ] && PARAMS="${PARAMS}--fidelity ${FIDELITY} "
-[ ! -z "$CLEAN" ] && PARAMS="${PARAMS}--CLEAN ${CLEAN} "
-[ ! -z "$OUTPUT" ] && PARAMS="${PARAMS}--OUTPUT ${OUTPUT} "
-[ ! -z "$BBOX" ] && PARAMS="${PARAMS}--BBOX ${BBOX} "
-[ ! -z "$RAIL" ] && PARAMS="${PARAMS}--RAIL ${RAIL} "
-[ ! -z "$PTINFRA" ] && PARAMS="${PARAMS}--PTINFRA ${PTINFRA} "
-[ ! -z "$RMMODE" ] && PARAMS="${PARAMS}--RMMODE ${RMMODE} "
-[ ! -z "$ADDMODE" ] && PARAMS="${PARAMS}--ADDMODE ${ADDMODE} "
+[ ! -z "$INPUT" ] && PARAMS="${PARAMS} --input ${INPUT}"
+[ ! -z "$COUNTRY" ] && PARAMS="${PARAMS} --country ${COUNTRY}"
+[ ! -z "$FIDELITY" ] && PARAMS="${PARAMS} --fidelity ${FIDELITY}"
+[ ! -z "$CLEAN" ] && PARAMS="${PARAMS} --CLEAN ${CLEAN}"
+[ ! -z "$OUTPUT" ] && PARAMS="${PARAMS} --OUTPUT ${OUTPUT}"
+[ ! -z "$BBOX" ] && PARAMS="${PARAMS} --BBOX ${BBOX}"
+[ ! -z "$RAIL" ] && PARAMS="${PARAMS} --RAIL ${RAIL}"
+[ ! -z "$PTINFRA" ] && PARAMS="${PARAMS} --PTINFRA ${PTINFRA}"
+[ ! -z "$RMMODE" ] && PARAMS="${PARAMS} --RMMODE ${RMMODE}"
+[ ! -z "$ADDMODE" ] && PARAMS="${PARAMS} --ADDMODE ${ADDMODE}"
 
 CALL_STR="java -jar /app/jar/planit-aurin-parser-${VERSION}.jar ${PARAMS}"
 echo $CALL_STR
