@@ -58,4 +58,3 @@ CMD ["sh", "-c", "java -jar /app/jar/planit-aurin-parser-${VERSION}.jar \
   --output ${OUTPUT}\
   "]
 
-       
