@@ -3,10 +3,10 @@
 # particular operation in Windows powershell 
 
 # Build the container image: (this can be commented out for speedier test runs if the image is current)
-#docker build -t osmparserwrapper-atrc -f ./atrc/Dockerfile .
+docker build -t osmparserwrapper-atrc:latest -f ./atrc/Dockerfile .
 
 # Create folders for data input and output within ATRC sub dir:
-mkdir -Force data
+mkdir -Force ./atrc/data
 mkdir -Force ./atrc/data/inputs
 mkdir -Force ./atrc/data/outputs
 
@@ -15,5 +15,5 @@ cp ./atrc/test_inputs/* ./atrc/data/inputs/
 cp ./atrc/test_parameters.yaml ./atrc/data/parameters.yaml
 
 # Run the container:
-docker run --mount type=bind,source="${PWD}"/atrc/data,target=/data osmparserwrapper-atrc
+docker run --mount type=bind,source="${PWD}"/atrc/data,target=/data osmparserwrapper-atrc:latest
     
