@@ -1,0 +1,32 @@
+java -jar /app/jar/planit-aurin-parser-0.0.1a1.jar --input /data/inputs/melbourne.osm.pbf --country Australia --fidelity coarse --CLEAN yes --OUTPUT /data/outputs
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+2022-03-22T01:28:51,657  INFO NativeMethodAccessorImpl:-2 dataFileCache open start
+2022-03-22T01:29:02,996  INFO Config:587 setting context to [file:/]
+2022-03-22T01:29:03,089  INFO Version:21 HV000001: Hibernate Validator null
+2022-03-22T01:29:03,407  INFO MatsimXmlParser:147 starting to parse xml from file /data/outputs/network.xml ...
+2022-03-22T01:29:03,419  INFO IOUtils:178 Resolved /data/outputs/network.xml to /data/outputs/network.xml
+2022-03-22T01:29:03,652  INFO MatsimNetworkReader:120 using network_v2-reader.
+2022-03-22T01:29:03,653  INFO MatsimXmlParser:275 Trying to load http://www.matsim.org/files/dtd/network_v2.dtd. In some cases (e.g. network interface up but no connection), this may take a bit.
+2022-03-22T01:29:04,509  INFO NetworkImpl:163  node # 1
+2022-03-22T01:29:04,510  INFO NetworkImpl:163  node # 4
+2022-03-22T01:29:04,511  INFO NetworkImpl:163  node # 16
+2022-03-22T01:29:04,517  INFO NetworkImpl:163  node # 64
+2022-03-22T01:29:04,536  INFO NetworkImpl:163  node # 256
+2022-03-22T01:29:04,572  INFO NetworkImpl:163  node # 1024
+2022-03-22T01:29:04,605  INFO NetworkImpl:163  node # 4096
+2022-03-22T01:29:04,703  INFO NetworkImpl:159  link # 1
+2022-03-22T01:29:04,704  INFO NetworkImpl:159  link # 4
+2022-03-22T01:29:04,705  INFO NetworkImpl:159  link # 16
+2022-03-22T01:29:04,708  INFO NetworkImpl:159  link # 64
+2022-03-22T01:29:04,719  INFO NetworkImpl:159  link # 256
+2022-03-22T01:29:04,739  INFO NetworkImpl:159  link # 1024
+2022-03-22T01:29:04,793  INFO NetworkImpl:159  link # 4096
+2022-03-22T01:29:05,014  INFO NetworkImpl:159  link # 16384
+2022-03-22T01:29:05,505  INFO NetworkCleaner:118 running org.matsim.core.network.algorithms.NetworkCleaner algorithm...
+2022-03-22T01:29:05,509  INFO NetworkCleaner:121   checking 16231 nodes and 41393 links for dead-ends...
+2022-03-22T01:29:05,589  INFO NetworkCleaner:139     The biggest cluster consists of 16225 nodes.
+2022-03-22T01:29:05,589  INFO NetworkCleaner:140   done.
+2022-03-22T01:29:05,600  INFO NetworkCleaner:155   resulting network contains 16225 nodes and 41383 links.
+2022-03-22T01:29:05,600  INFO NetworkCleaner:157 done.
+2022-03-22T01:29:05,603  INFO NetworkWriter:69 Writing network to file: /data/outputs/network_cleaned.xml...
+2022-03-22T01:29:06,899  INFO NetworkWriter:72 done.
