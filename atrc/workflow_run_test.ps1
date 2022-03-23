@@ -15,5 +15,5 @@ cp ./atrc/test_inputs/* ./atrc/data/inputs/
 cp ./atrc/test_parameters.yaml ./atrc/data/parameters.yaml
 
 # Run the container:
-docker run --mount type=bind,source="${PWD}"/atrc/data,target=/data osmparserwrapper-atrc:latest
+docker run --mount type=bind,source=${PWD}/atrc/data,target=/data osmparserwrapper-atrc:latest
     

@@ -37,7 +37,7 @@ To inspect the file structure of an image (not container), export it to a tar fi
 inspected without running it otherwise.
 
 ```
-docker image save osmparserwrapper:latest > ./image.tar
+docker image save osmparserwrapper:latest -o ./image.tar
 ```
 
 # Running the image **
