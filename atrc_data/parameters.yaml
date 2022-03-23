@@ -1,0 +1,28 @@
+inputs:
+  INPUT:
+    type: path
+    path: /atrc_data/inputs/melbourne.osm.pbf
+  COUNTRY:
+    type: value
+    value: Australia
+  FIDELITY:
+    type: value
+    value: coarse
+  CLEAN:
+    type: value
+    value: yes
+  OUTPUT:
+    type: path
+    path: /atrc_data/outputs
+outputs:
+  NETWORK:
+    type: xml
+    path: /atrc_data/outputs/network.xml
+  NETWORK_CLEANED:
+    type: xml
+    path: /atrc_data/outputs/network_cleaned.xml
+  NETWORK_GEOMETRY:
+    type: txt
+    path: /atrc_data/outputs/network_geometry.txt
+    # ...
+    
