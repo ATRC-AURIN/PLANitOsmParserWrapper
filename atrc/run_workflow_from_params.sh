@@ -5,11 +5,12 @@ function parse_yaml {
 eval $(parse_yaml /data/parameters.yaml)
 
 VERSION=0.0.1a1
+OUTPUT="/atrc_data/outputs"
+
 INPUT=$inputs_INPUT_path
 COUNTRY=$inputs_COUNTRY_value
 FIDELITY=$inputs_FIDELITY_value
 CLEAN=$inputs_CLEAN_value
-OUTPUT=$inputs_OUTPUT_path
 # Probably want to add some other test cases / other parameters.yamls to fill these out
 # BBOX = 
 # RAIL =
