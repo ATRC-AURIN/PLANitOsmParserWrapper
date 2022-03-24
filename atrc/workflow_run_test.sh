@@ -5,7 +5,7 @@
 # particular operation. 
 
 # Build the container image: (this can be commented out for speedier test runs if the image is current)
-#docker build -t osmparserwrapper-atrc -f atrc/Dockerfile .
+docker build -t osmparserwrapper-atrc -f atrc/Dockerfile .
 
 # Create folders for data input and output:
 mkdir atrc_data
