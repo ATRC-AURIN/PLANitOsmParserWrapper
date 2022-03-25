@@ -11,9 +11,6 @@ inputs:
   CLEAN:
     type: value
     value: yes
-  OUTPUT:
-    type: path
-    path: /atrc_data/outputs
 outputs:
   NETWORK:
     type: xml
