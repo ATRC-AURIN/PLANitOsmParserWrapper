@@ -52,4 +52,4 @@ The following PLANit dependencies are present:
 * PLANitOSM
     * code for parsing Open Street Map networks 
 * PLANitMatsim
-    * code for prsisting networks in MATSim format
+    * code for persisting networks in MATSim format
