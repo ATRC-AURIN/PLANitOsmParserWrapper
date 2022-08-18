@@ -1,7 +1,7 @@
 # PLANitOsmParserWrapper
 
-![Master Branch](https://github.com/TrafficPLANit/PLANit/actions/workflows/maven_master.yml/badge.svg?branch=master)
-![Develop Branch](https://github.com/TrafficPLANit/PLANit/actions/workflows/maven_develop.yml/badge.svg?branch=develop)
+![Master Branch](https://github.com/AURIN-OFFICE/PLANitOsmParserWrapper/actions/workflows/maven_master.yml/badge.svg?branch=master)
+![Develop Branch](https://github.com/AURIN-OFFICE/PLANitOsmParserWrapper/actions/workflows/maven_develop.yml/badge.svg?branch=develop)
 
 Wrapper for Aurin services to access exposed functionality of PLANit network converters (OSM to MATSim).
 
