@@ -44,12 +44,12 @@ where it can be used to prettify the link shapes (instead of being restricted to
 The following PLANit dependencies are present:
 
 * PLANitParentPom
-    * parent pom of all PLANit dependencies used
+    * Parent pom of all PLANit dependencies used
 * PLANitUtils
-    * generic utilities 
+    * Generic utilities 
 * PLANit
-    * core PLANit repo 
+    * Core PLANit repo 
 * PLANitOSM
-    * code for parsing Open Street Map networks 
+    * Code for parsing Open Street Map networks 
 * PLANitMatsim
-    * code for persisting networks in MATSim format
+    * Code for persisting networks in MATSim format
