@@ -123,12 +123,12 @@ public class PlanitAurinParserMain {
     Path originalNetworkFilePath = 
         Path.of(
             settings.getOutputDirectory(),
-            settings.getOutputFileName()+MatsimWriter.DEFAULT_FILE_NAME_EXTENSION);
+            settings.getFileName()+MatsimWriter.DEFAULT_FILE_NAME_EXTENSION);
     Path cleanedNetworkFilePath = 
         Path.of(
             settings.getOutputDirectory(),
-            settings.getOutputFileName()+"_cleaned"+MatsimWriter.DEFAULT_FILE_NAME_EXTENSION);
-    LOGGER.info(String.format("Cleaning MATSim network %s",originalNetworkFilePath.toString()));    
+            settings.getFileName()+"_cleaned"+MatsimWriter.DEFAULT_FILE_NAME_EXTENSION);
+    LOGGER.info(String.format("Cleaning MATSim network %s", originalNetworkFilePath));
     org.matsim.run.NetworkCleaner.main(new String[] {originalNetworkFilePath.toString(), cleanedNetworkFilePath.toString()});
     LOGGER.info(String.format("Persisted cleaned MATSim network to %s",cleanedNetworkFilePath));
     

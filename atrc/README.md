@@ -1,6 +1,6 @@
 # ATRC
 
-In this directory we host a specific form of running the containerised version of the PLANitOSMParserWrapper. It allows for the use of a *.yml file to configure all parameters which are then parsed and passed on to the wrapper. This makes the wrapper compatible with the ATRC platform back-end infrastructure. 
+In this directory we host a specific form of running the containerised version of the PLANitOSMParserWrapper. It allows for the use of a *.yaml file to configure all parameters which are then parsed and passed on to the wrapper. This makes the wrapper compatible with the ATRC platform back-end infrastructure. 
 
 An example on how to run the image using this approach is provided in `workflow_run_test.sh` .
 
